@@ -10,7 +10,7 @@ import { AuthContext, AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent } fro
 
 const authConfig = {
   clientId: '6eb6e1f06303fb4a94296cc3452564cb01801b4e964422509497519a7fea65e4',
-  authorizationEndpoint: 'https://gitlab.com/oauth/authorize?response_type=code&grant_type=authorization_code',
+  authorizationEndpoint: 'https://gitlab.com/oauth/authorize',
   tokenEndpoint: 'https://gitlab.com/oauth/token',
   redirectUri: 'http://localhost:3000/',
   scope: 'api',
