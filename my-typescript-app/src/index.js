@@ -13,7 +13,7 @@ const authConfig = {
   authorizationEndpoint: 'https://gitlab.com/oauth/authorize',
   tokenEndpoint: 'https://gitlab.com/oauth/token',
   redirectUri: 'http://localhost:3000/',
-  scope: 'api',
+  scope: 'api read_api read_user create_runner read_repository write_repository read_registry write_registry read_observability write_observability sudo admin_mode openid profile email',
   onRefreshTokenExpire: (event) => window.confirm('Session expired. Refresh page to continue using the site?') && event.login(),
 }
 
