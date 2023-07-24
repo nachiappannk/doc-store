@@ -5,8 +5,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthContext, AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent } from "react-oauth2-code-pkce"
-
-
+import LoginContainer from './LoginContainer';
+import DocumentLister from './DocumentLister';
 
 const authConfig = {
   clientId: '6eb6e1f06303fb4a94296cc3452564cb01801b4e964422509497519a7fea65e4',
@@ -19,52 +19,11 @@ const authConfig = {
   decodeToken : false
 }
 
-const UserInfo = (props) => {
-  const {token, login, logOut} = useContext(AuthContext);
-  const authContext = useContext(AuthContext);
-
-  console.log(authContext);
-  console.log(token);
-  return <>
-    {token ? (
-      <>
-        <div>
-          <h4>Access Token (JWT)</h4>
-          <pre
-            style={{
-              width: '400px',
-              margin: '10px',
-              padding: '5px',
-              border: 'black 2px solid',
-              wordBreak: 'break-all',
-              whiteSpace: 'break-spaces',
-            }}
-          >
-            {token}
-          </pre>
-        </div>
-        <button onClick={() => logOut()}>Logout</button>
-        <>
-            {props.children}
-        </>
-      </>
-    ) : (
-      <>
-        <div>You are not logged in.</div>
-        <button onClick={() => login()}>Login</button>
-      </>
-    )}
-  </>
-}
-
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider authConfig={authConfig}>
-    
-        <UserInfo><div>hi this is a message</div></UserInfo>
+        <LoginContainer><DocumentLister/></LoginContainer>
     </AuthProvider>
   </React.StrictMode>
 );
