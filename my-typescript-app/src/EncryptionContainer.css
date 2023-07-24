@@ -1,0 +1,12 @@
+.centered-container {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Replace with your blue theme color */
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

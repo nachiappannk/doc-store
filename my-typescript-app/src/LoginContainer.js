@@ -12,8 +12,14 @@ const LoginContainer = (props) => {
     const {token, login, logOut} = useContext(AuthContext);
     const authContext = useContext(AuthContext);
   
-    console.log(authContext);
-    console.log(token);
+    if(token)
+    {
+        console.log(typeof(authContext));
+        console.log(authContext.idTokenData);
+        console.log(authContext);
+        console.log(token);
+    }
+    
     return <>
       {token ? (
         <>
