@@ -17,6 +17,7 @@ const EncryptionContainer = (props) => {
   const [isVerificationCodeShown, setIsVerificationCodeShown] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [userVerificationCode, setUserVerificationCode] = useState('');
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsVerificationCodeShown(!isVerificationCodeShown);
@@ -43,7 +44,20 @@ const EncryptionContainer = (props) => {
     var intcode = parseInt(hexCode, 16);
     var verificationCode = intcode % 1000;
     setVerificationCode(verificationCode.toString());
+    computeIsSubmitEnabled();
   };
+
+  const computeIsSubmitEnabled = () =>{
+    if(verificationCode == userVerificationCode)
+    {
+      console.log("enabled"+verificationCode+userVerificationCode);
+      setIsSubmitEnabled(true);      
+    }else
+    {
+      console.log("disbled"+verificationCode+userVerificationCode);
+      setIsSubmitEnabled(false);
+    }
+  }
 
   return <>
     {token ? (
@@ -120,11 +134,10 @@ const EncryptionContainer = (props) => {
               </>
               )}
             </div>
-            <div>start of encryption container</div>
+            <button className="login-button" disabled={!isSubmitEnabled} onClick={() => {console.log("clicked")}}>Set Encryption Key</button>
             <div>
               {props.children}
             </div>
-            <div>end of encryption container</div>
           </EncryptionContext.Provider>
         </div>
       </>
