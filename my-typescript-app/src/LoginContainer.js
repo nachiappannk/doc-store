@@ -11,37 +11,15 @@ import { AuthContext, AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent } fro
 const LoginContainer = (props) => {
     const {token, login, logOut} = useContext(AuthContext);
     const authContext = useContext(AuthContext);
-  
-    if(token)
-    {
-        console.log(typeof(authContext));
-        console.log(authContext.idTokenData);
-        console.log(authContext);
-        console.log(token);
-    }
-    
+    const name = authContext?.idTokenData?.name ?? "user";
     return <>
       {token ? (
         <>
-          <div>
-            <h4>Access Token (JWT) container</h4>
-            <pre
-              style={{
-                width: '400px',
-                margin: '10px',
-                padding: '5px',
-                border: 'black 2px solid',
-                wordBreak: 'break-all',
-                whiteSpace: 'break-spaces',
-              }}
-            >
-              {token}
-            </pre>
+          <div className="login-container">
+          <p className="login-message">Welcome {name}</p>
+          <button className="login-button" onClick={() => logOut()}>Logout</button>
+          <>{props.children}</>    
           </div>
-          <button onClick={() => logOut()}>Logout</button>
-          <>
-              {props.children}
-          </>
         </>
       ) : (
         <>
