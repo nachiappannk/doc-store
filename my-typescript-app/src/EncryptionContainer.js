@@ -57,6 +57,7 @@ const EncryptionContainer = (props) => {
                 />
               </div>
               <br/>
+
               <div className="input-group">
                 <label htmlFor="passphrase">Encryption Pass Phrase</label>
                 <input
@@ -67,6 +68,17 @@ const EncryptionContainer = (props) => {
                 />
               </div>
               <br/>
+              <div className="input-group">
+                <label htmlFor="show-verification-code-input">Setting Up - Show verification code
+                <input
+                  type="checkbox"
+                  id="show-verification-code-input"
+                  value={isChecked}
+                  onChange={handleCheckboxChange}
+                />
+                </label>
+              </div>
+              <br />
             </div>
             <div>start of encryption container</div>
             <div>
