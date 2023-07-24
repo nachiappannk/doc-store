@@ -16,6 +16,7 @@ const EncryptionContainer = (props) => {
   const [passPhrase, setPassPhrase] = useState('');
   const [isVerificationCodeShown, setIsVerificationCodeShown] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
+  const [userVerificationCode, setUserVerificationCode] = useState('');
 
   const handleCheckboxChange = () => {
     setIsVerificationCodeShown(!isVerificationCodeShown);
@@ -29,6 +30,10 @@ const EncryptionContainer = (props) => {
     setProjectName(event.target.value);
   };
 
+  const handleUserVerificationCode = (event) => {
+    setUserVerificationCode(event.target.value);
+  };
+
   const handlePassPhraseChange = (event) => {
     setPassPhrase(event.target.value);
     let passPhraseLocal = event.target.value ?? "";
@@ -37,7 +42,7 @@ const EncryptionContainer = (props) => {
     let hexCode = sha256Code.toString(CryptoJs.enc.Hex).substring(0,4);
     var intcode = parseInt(hexCode, 16);
     var verificationCode = intcode % 1000;
-    setVerificationCode(verificationCode);
+    setVerificationCode(verificationCode.toString());
   };
 
   return <>
@@ -91,17 +96,30 @@ const EncryptionContainer = (props) => {
                 </label>
               </div>
               <br />
-
+              <>
               <div className="input-group">
                 <label htmlFor="verification-code">Verification Code</label>
                 <input
                   type="text"
                   id="verification-code"
+                  readOnly={true}
                   value={verificationCode}
                 />
               </div>
               <br />
-
+              </>
+                <>
+              <div className="input-group">
+                <label htmlFor="user-verification-code">Verification Code</label>
+                <input
+                  type="text"
+                  id="verification-code"
+                  value={userVerificationCode}
+                  onChange={handleUserVerificationCode}
+                />
+              </div>
+              <br />
+              </>
             </div>
             <div>start of encryption container</div>
             <div>
