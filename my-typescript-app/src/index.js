@@ -19,7 +19,7 @@ const authConfig = {
   decodeToken : false
 }
 
-const UserInfo = () => {
+const UserInfo = (props) => {
   const {token, login, logOut} = useContext(AuthContext);
   const authContext = useContext(AuthContext);
 
@@ -44,6 +44,9 @@ const UserInfo = () => {
           </pre>
         </div>
         <button onClick={() => logOut()}>Logout</button>
+        <>
+            {props.children}
+        </>
       </>
     ) : (
       <>
@@ -61,7 +64,7 @@ root.render(
   <React.StrictMode>
     <AuthProvider authConfig={authConfig}>
     
-        <UserInfo/>
+        <UserInfo><div>hi this is a message</div></UserInfo>
     </AuthProvider>
   </React.StrictMode>
 );
