@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { AuthContext, AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent } from "react-oauth2-code-pkce"
 import LoginContainer from './LoginContainer';
 import DocumentLister from './DocumentLister';
+import EncryptionContainer from './EncryptionContainer';
 
 const authConfig = {
   clientId: '6eb6e1f06303fb4a94296cc3452564cb01801b4e964422509497519a7fea65e4',
@@ -23,7 +24,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider authConfig={authConfig}>
-        <LoginContainer><DocumentLister/></LoginContainer>
+        <LoginContainer>
+          <EncryptionContainer>
+            <DocumentLister/>
+          </EncryptionContainer>
+        </LoginContainer>
     </AuthProvider>
   </React.StrictMode>
 );
