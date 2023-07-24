@@ -39,7 +39,7 @@ const EncryptionContainer = (props) => {
     let passPhraseLocal = event.target.value ?? "";
     console.log(passPhraseLocal);
     let sha256Code = sha256(passPhraseLocal);
-    let hexCode = sha256Code.toString(CryptoJs.enc.Hex).substring(0,4);
+    let hexCode = sha256Code.toString(CryptoJs.enc.Hex).substring(0, 4);
     var intcode = parseInt(hexCode, 16);
     var verificationCode = intcode % 1000;
     setVerificationCode(verificationCode.toString());
@@ -60,7 +60,6 @@ const EncryptionContainer = (props) => {
                   onChange={handleGroupNameChange}
                 />
               </div>
-
               <br />
               <div className="input-group">
                 <label htmlFor="project-name-input">Project Name</label>
@@ -71,8 +70,7 @@ const EncryptionContainer = (props) => {
                   onChange={handleProjectNameChange}
                 />
               </div>
-              <br/>
-
+              <br />
               <div className="input-group">
                 <label htmlFor="passphrase">Encryption Pass Phrase</label>
                 <input
@@ -82,44 +80,45 @@ const EncryptionContainer = (props) => {
                   onChange={handlePassPhraseChange}
                 />
               </div>
-              <br/>
-              
-              
+              <br />
               <div className="input-group">
                 <label htmlFor="show-verification-code-input">Setting Up - Show verification code
-                <input
-                  type="checkbox"
-                  id="show-verification-code-input"
-                  value={isVerificationCodeShown}
-                  onChange={handleCheckboxChange}
-                />
+                  <input
+                    type="checkbox"
+                    id="show-verification-code-input"
+                    value={isVerificationCodeShown}
+                    onChange={handleCheckboxChange}
+                  />
                 </label>
               </div>
               <br />
+              {isVerificationCodeShown ? (
               <>
-              <div className="input-group">
-                <label htmlFor="verification-code">Verification Code</label>
-                <input
-                  type="text"
-                  id="verification-code"
-                  readOnly={true}
-                  value={verificationCode}
-                />
-              </div>
-              <br />
+                <div className="input-group">
+                  <label htmlFor="verification-code">Verification Code</label>
+                  <input
+                    type="text"
+                    id="verification-code"
+                    readOnly={true}
+                    value={verificationCode}
+                  />
+                </div>
+                <br />
               </>
-                <>
-              <div className="input-group">
-                <label htmlFor="user-verification-code">Verification Code</label>
-                <input
-                  type="text"
-                  id="verification-code"
-                  value={userVerificationCode}
-                  onChange={handleUserVerificationCode}
-                />
-              </div>
-              <br />
+              ):(
+              <>
+                <div className="input-group">
+                  <label htmlFor="user-verification-code">Verification Code</label>
+                  <input
+                    type="text"
+                    id="verification-code"
+                    value={userVerificationCode}
+                    onChange={handleUserVerificationCode}
+                  />
+                </div>
+                <br />
               </>
+              )}
             </div>
             <div>start of encryption container</div>
             <div>
