@@ -14,33 +14,47 @@ const EncryptionContainer = (props) => {
   const [groupName, setGroupName] = useState('');
   const [projectName, setProjectName] = useState('');
   const [passPhrase, setPassPhrase] = useState('');
+  const [isNextEnabled, setIsNextEnabled] = useState(false);
 
   const [verificationCode, setVerificationCode] = useState('');
 
   const handleGroupNameChange = (event) => {
+    console.log(event.target.value);
     setGroupName(event.target.value);
+    handleNext(event.target.value, projectName, passPhrase);
   };
 
   const handleProjectNameChange = (event) => {
     setProjectName(event.target.value);
+    handleNext(groupName, event.target.value, passPhrase);
   };
 
   const handlePassPhraseChange = (event) => {
-
     let passPhraseLocal = event.target.value ?? "";
-    
-    console.log("The passphrase is " + passPhraseLocal);
     setPassPhrase(passPhraseLocal);
-    
     let sha256Code = sha256(passPhraseLocal);
     let hexCode = sha256Code.toString(CryptoJs.enc.Hex).substring(0, 4);
     let intcode = parseInt(hexCode, 16);
     let verificationCode = intcode % 1000;
     let verificationCodeString = verificationCode.toString(); 
-    console.log("The verification is " + verificationCodeString);
     setVerificationCode(verificationCodeString);
+    handleNext(groupName, projectName, passPhraseLocal);
   };
 
+  const handleNext = (gName, pName, pp) => {
+    let isValid = true;
+    isValid = isValid && isStringValid(gName);
+    isValid = isValid && isStringValid(pName);
+    isValid = isValid && isStringValid(pp);
+    console.log("group name: " +  gName + " projectname: "+ pName + " passPhrase: "+pp+" isValid: "+isValid);
+    setIsNextEnabled(isValid);
+  }
+
+  const isStringValid = (str) =>{
+    return (!(!(str && str.trim())));
+  }
+
+  //console.log("The valud is " + isNextEnabled + "  -- " + (!isNextEnabled) + typeof(isNextEnabled));
   return <>
     {token ? (
       <>
@@ -90,7 +104,7 @@ const EncryptionContainer = (props) => {
                 <br />
               </>
             </div>
-            <button className="login-button" disabled={true} onClick={() => {console.log("clicked")}}>Set Encryption Key</button>
+            <button className="login-button" disabled={!isNextEnabled} onClick={() => {console.log("clicked")}}>Set Encryption Key</button>
             <div>
               {props.children}
             </div>
