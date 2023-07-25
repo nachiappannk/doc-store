@@ -18,6 +18,7 @@ const DocumentLister = (props) => {
           <div><span>The EncryptionKey: </span>{encryptionKey}</div>
           <div>https://docs.gitlab.com/ee/api/repositories.html</div>
           <div>curl --request GET --header "Authorization: Bearer {token}" --header "Content-Type:application/json" "https://gitlab.com/api/v4/projects/{groupName}%2F{projectName}/repository/tree"</div>
+          <div>curl --request GET --header "Authorization: Bearer {token}" --header "Content-Type:application/json" --header "Accept:application/json" "https://gitlab.com/api/v4/projects/{groupName}%2F{projectName}/repository/files/README.md?ref=main"</div>
           <button onClick={()=> clear()}>clear encryption key</button>
         </>
       ) : (
