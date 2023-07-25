@@ -6,7 +6,7 @@
  - The application should have a log in screen. The login screen should be backed by the Git Service provider.
  - Post logging in to the application, the encryption phrase is set.
  - This phrase is used to encrypt/decrypt the text documents.
- - As the authentication is already completed, the encrypted documents in Git repository.
+ - As the authentication is already completed, the encrypted documents are stored in Git repository.
  - It is important to note each encryption/decryption happens on the browser. Unencrypted document does not leave the browser.
  
 ## Use cases
@@ -17,7 +17,7 @@
  - Delete a document.
  - Search a document from the list based on the name.
 
-## Supporting User cases
+## Supporting Use cases
 To meet the main use cases, the following supporting use cases are necessary.
  - Login to Git Service provider
  - Setting the encryption phrase
