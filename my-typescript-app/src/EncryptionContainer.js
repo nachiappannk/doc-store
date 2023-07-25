@@ -9,19 +9,13 @@ import CryptoJs from 'crypto-js';
 const EncryptionContext = createContext();
 
 const EncryptionContainer = (props) => {
-  const [encryptionPhrase, setEncryptionPhrase] = useState("Nachiappan");
   const { token } = useContext(AuthContext);
+
   const [groupName, setGroupName] = useState('');
   const [projectName, setProjectName] = useState('');
   const [passPhrase, setPassPhrase] = useState('');
-  const [isVerificationCodeShown, setIsVerificationCodeShown] = useState(false);
-  const [verificationCode, setVerificationCode] = useState('');
-  const [userVerificationCode, setUserVerificationCode] = useState('');
-  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
-  const handleCheckboxChange = () => {
-    setIsVerificationCodeShown(!isVerificationCodeShown);
-  };
+  const [verificationCode, setVerificationCode] = useState('');
 
   const handleGroupNameChange = (event) => {
     setGroupName(event.target.value);
@@ -31,39 +25,27 @@ const EncryptionContainer = (props) => {
     setProjectName(event.target.value);
   };
 
-  const handleUserVerificationCode = (event) => {
-    setUserVerificationCode(event.target.value);
-  };
-
   const handlePassPhraseChange = (event) => {
-    setPassPhrase(event.target.value);
+
     let passPhraseLocal = event.target.value ?? "";
-    console.log(passPhraseLocal);
+    
+    console.log("The passphrase is " + passPhraseLocal);
+    setPassPhrase(passPhraseLocal);
+    
     let sha256Code = sha256(passPhraseLocal);
     let hexCode = sha256Code.toString(CryptoJs.enc.Hex).substring(0, 4);
-    var intcode = parseInt(hexCode, 16);
-    var verificationCode = intcode % 1000;
-    setVerificationCode(verificationCode.toString());
-    computeIsSubmitEnabled();
+    let intcode = parseInt(hexCode, 16);
+    let verificationCode = intcode % 1000;
+    let verificationCodeString = verificationCode.toString(); 
+    console.log("The verification is " + verificationCodeString);
+    setVerificationCode(verificationCodeString);
   };
-
-  const computeIsSubmitEnabled = () =>{
-    if(verificationCode == userVerificationCode)
-    {
-      console.log("enabled"+verificationCode+userVerificationCode);
-      setIsSubmitEnabled(true);      
-    }else
-    {
-      console.log("disbled"+verificationCode+userVerificationCode);
-      setIsSubmitEnabled(false);
-    }
-  }
 
   return <>
     {token ? (
       <>
         <div className="centered-container">
-          <EncryptionContext.Provider value={encryptionPhrase}>
+          <EncryptionContext.Provider value={passPhrase}>
             <div>
               <div className="input-group">
                 <label htmlFor="group-name-input">Group Name:</label>
@@ -95,18 +77,6 @@ const EncryptionContainer = (props) => {
                 />
               </div>
               <br />
-              <div className="input-group">
-                <label htmlFor="show-verification-code-input">Setting Up - Show verification code
-                  <input
-                    type="checkbox"
-                    id="show-verification-code-input"
-                    value={isVerificationCodeShown}
-                    onChange={handleCheckboxChange}
-                  />
-                </label>
-              </div>
-              <br />
-              {isVerificationCodeShown ? (
               <>
                 <div className="input-group">
                   <label htmlFor="verification-code">Verification Code</label>
@@ -119,22 +89,8 @@ const EncryptionContainer = (props) => {
                 </div>
                 <br />
               </>
-              ):(
-              <>
-                <div className="input-group">
-                  <label htmlFor="user-verification-code">Verification Code</label>
-                  <input
-                    type="text"
-                    id="verification-code"
-                    value={userVerificationCode}
-                    onChange={handleUserVerificationCode}
-                  />
-                </div>
-                <br />
-              </>
-              )}
             </div>
-            <button className="login-button" disabled={!isSubmitEnabled} onClick={() => {console.log("clicked")}}>Set Encryption Key</button>
+            <button className="login-button" disabled={true} onClick={() => {console.log("clicked")}}>Set Encryption Key</button>
             <div>
               {props.children}
             </div>
