@@ -8,6 +8,7 @@ import { EncryptionContext } from './EncryptionContainer';
 const DocumentLister = (props) => {
     const {token} = useContext(AuthContext);
     const phrase = useContext(EncryptionContext);
+    console.log(phrase)
     return <>
       {token ? (
         <>

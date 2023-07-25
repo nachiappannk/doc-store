@@ -6,11 +6,12 @@ import './EncryptionContainer.css';
 import sha256 from 'crypto-js/sha256';
 import CryptoJs from 'crypto-js';
 
-const EncryptionContext = createContext();
+const EncryptionContext = createContext({});
 
 const EncryptionContainer = (props) => {
   const { token } = useContext(AuthContext);
 
+  const [isContextSet, setIsContextSet] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [projectName, setProjectName] = useState('');
   const [passPhrase, setPassPhrase] = useState('');
@@ -19,7 +20,6 @@ const EncryptionContainer = (props) => {
   const [verificationCode, setVerificationCode] = useState('');
 
   const handleGroupNameChange = (event) => {
-    console.log(event.target.value);
     setGroupName(event.target.value);
     handleNext(event.target.value, projectName, passPhrase);
   };
@@ -46,7 +46,6 @@ const EncryptionContainer = (props) => {
     isValid = isValid && isStringValid(gName);
     isValid = isValid && isStringValid(pName);
     isValid = isValid && isStringValid(pp);
-    console.log("group name: " +  gName + " projectname: "+ pName + " passPhrase: "+pp+" isValid: "+isValid);
     setIsNextEnabled(isValid);
   }
 
@@ -54,12 +53,12 @@ const EncryptionContainer = (props) => {
     return (!(!(str && str.trim())));
   }
 
-  //console.log("The valud is " + isNextEnabled + "  -- " + (!isNextEnabled) + typeof(isNextEnabled));
+  let test = {groupName: groupName, projectName: projectName}
   return <>
-    {token ? (
+    {!isContextSet ? (
       <>
         <div className="centered-container">
-          <EncryptionContext.Provider value={passPhrase}>
+          <EncryptionContext.Provider value={[groupName, projectName, passPhrase]}>
             <div>
               <div className="input-group">
                 <label htmlFor="group-name-input">Group Name:</label>
