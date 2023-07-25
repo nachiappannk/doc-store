@@ -36,7 +36,7 @@ const EncryptionContainer = (props) => {
     let hexCode = sha256Code.toString(CryptoJs.enc.Hex).substring(0, 4);
     let intcode = parseInt(hexCode, 16);
     let verificationCode = intcode % 1000;
-    let verificationCodeString = verificationCode.toString(); 
+    let verificationCodeString = verificationCode.toString();
     setVerificationCode(verificationCodeString);
     handleNext(groupName, projectName, passPhraseLocal);
   };
@@ -49,70 +49,67 @@ const EncryptionContainer = (props) => {
     setIsNextEnabled(isValid);
   }
 
-  const isStringValid = (str) =>{
+  const isStringValid = (str) => {
     return (!(!(str && str.trim())));
   }
 
-  let test = {groupName: groupName, projectName: projectName}
   return <>
     {!isContextSet ? (
       <>
         <div className="centered-container">
-          <EncryptionContext.Provider value={[groupName, projectName, passPhrase]}>
-            <div>
-              <div className="input-group">
-                <label htmlFor="group-name-input">Group Name:</label>
-                <input
-                  type="text"
-                  id="group-name-input"
-                  value={groupName}
-                  onChange={handleGroupNameChange}
-                />
-              </div>
-              <br />
-              <div className="input-group">
-                <label htmlFor="project-name-input">Project Name</label>
-                <input
-                  type="text"
-                  id="project-name-input"
-                  value={projectName}
-                  onChange={handleProjectNameChange}
-                />
-              </div>
-              <br />
-              <div className="input-group">
-                <label htmlFor="passphrase">Encryption Pass Phrase</label>
-                <input
-                  type="password"
-                  id="passphrase"
-                  value={passPhrase}
-                  onChange={handlePassPhraseChange}
-                />
-              </div>
-              <br />
-              <>
-                <div className="input-group">
-                  <label htmlFor="verification-code">Verification Code</label>
-                  <input
-                    type="text"
-                    id="verification-code"
-                    readOnly={true}
-                    value={verificationCode}
-                  />
-                </div>
-                <br />
-              </>
+
+          <div>
+            <div className="input-group">
+              <label htmlFor="group-name-input">Group Name:</label>
+              <input
+                type="text"
+                id="group-name-input"
+                value={groupName}
+                onChange={handleGroupNameChange}
+              />
             </div>
-            <button className="login-button" disabled={!isNextEnabled} onClick={() => {console.log("clicked")}}>Set Encryption Key</button>
-            <div>
-              {props.children}
+            <br />
+            <div className="input-group">
+              <label htmlFor="project-name-input">Project Name</label>
+              <input
+                type="text"
+                id="project-name-input"
+                value={projectName}
+                onChange={handleProjectNameChange}
+              />
             </div>
-          </EncryptionContext.Provider>
+            <br />
+            <div className="input-group">
+              <label htmlFor="passphrase">Encryption Pass Phrase</label>
+              <input
+                type="password"
+                id="passphrase"
+                value={passPhrase}
+                onChange={handlePassPhraseChange}
+              />
+            </div>
+            <br />
+            <div className="input-group">
+              <label htmlFor="verification-code">Verification Code</label>
+              <input
+                type="text"
+                id="verification-code"
+                readOnly={true}
+                value={verificationCode}
+              />
+            </div>
+            <br />
+            <button className="login-button" disabled={!isNextEnabled} onClick={(event) => setIsContextSet(true)}>Set Encryption Key</button>
+          </div>
         </div>
       </>
     ) : (
       <>
-        <div>Error</div>
+        <EncryptionContext.Provider value={[groupName, projectName, passPhrase, ()=> setIsContextSet(false) ]}>
+          <div>
+            {props.children}
+          </div>
+        </EncryptionContext.Provider>
       </>
     )}
   </>
