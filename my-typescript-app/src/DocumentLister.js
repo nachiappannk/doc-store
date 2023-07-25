@@ -7,17 +7,16 @@ import { EncryptionContext } from './EncryptionContainer';
 
 const DocumentLister = (props) => {
     const {token} = useContext(AuthContext);
-    const phrase = useContext(EncryptionContext);
-    console.log(phrase)
+    const [groupName, projectName, encryptionKey, clear] = useContext(EncryptionContext);
+    
     return <>
       {token ? (
         <>
-          <div>
-                <h4>Main Document</h4>
-                <span>The token: </span>{token}
-                <div></div>
-                <span>The encryption phrase: </span>{phrase}
-          </div>
+          <div><span>The token: </span>{token}</div>
+          <div><span>The Group: </span>{groupName}</div>
+          <div><span>The project: </span>{projectName}</div>
+          <div><span>The EncryptionKey: </span>{encryptionKey}</div>
+          <button onClick={()=> clear()}>clear encryption key</button>
         </>
       ) : (
         <>
