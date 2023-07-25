@@ -48,3 +48,9 @@ To meet the main use cases, the following supporting use cases are necessary.
  - Implementing a ReadMe page
  - Implementing Routing in react
  - Testing the product
+
+## Getting started
+ - Creat a git lab account
+ - Create a group 
+ - Create a project in the group
+ - Upload a simple text file to the group
