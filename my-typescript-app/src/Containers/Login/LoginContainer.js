@@ -1,11 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
 import './LoginContainer.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { AuthContext, AuthProvider, TAuthConfig, TRefreshTokenExpiredEvent } from "react-oauth2-code-pkce"
+import { AuthContext } from "react-oauth2-code-pkce"
 
 
 const LoginContainer = (props) => {

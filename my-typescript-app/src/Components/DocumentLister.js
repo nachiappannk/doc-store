@@ -1,8 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
-import './index.css';
 import { AuthContext } from "react-oauth2-code-pkce"
-import { EncryptionContext } from './EncryptionContainer';
+import { EncryptionContext } from "../Containers";
 
 
 const DocumentLister = (props) => {

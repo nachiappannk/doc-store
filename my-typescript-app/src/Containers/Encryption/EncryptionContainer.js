@@ -1,7 +1,5 @@
 import React from 'react';
-import { useState, createContext, useContext } from 'react';
-import './index.css';
-import { AuthContext } from "react-oauth2-code-pkce"
+import { useState, createContext } from 'react';
 import './EncryptionContainer.css';
 import sha256 from 'crypto-js/sha256';
 import CryptoJs from 'crypto-js';
@@ -9,8 +7,6 @@ import CryptoJs from 'crypto-js';
 const EncryptionContext = createContext({});
 
 const EncryptionContainer = (props) => {
-  const { token } = useContext(AuthContext);
-
   const [isContextSet, setIsContextSet] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [projectName, setProjectName] = useState('');
@@ -115,6 +111,5 @@ const EncryptionContainer = (props) => {
   </>
 }
 
-export { EncryptionContext }
-export default EncryptionContainer;
+export { EncryptionContext, EncryptionContainer };
 
