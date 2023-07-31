@@ -2,18 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { reportWebVitals, AppAuthProvider } from './Config';
-import { LoginContainer, EncryptionContainer } from "./Containers";
-import { DocumentLister } from './Components';
+import { AppRoutes, } from "./Containers";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppAuthProvider>
-      <LoginContainer>
-        <EncryptionContainer>
-          <DocumentLister />
-        </EncryptionContainer>
-      </LoginContainer>
+    <AppAuthProvider>          
+      <AppRoutes/>
     </AppAuthProvider>
   </React.StrictMode>
 );

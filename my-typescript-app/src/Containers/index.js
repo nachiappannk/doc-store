@@ -4,5 +4,6 @@ import {
   EncryptionContainer,
 } from "./Encryption/EncryptionContainer";
 
+import AppRoutes from "./Routes/AppRoutes";
 
-export { LoginContainer, EncryptionContainer, EncryptionContext };
+export { AppRoutes,LoginContainer, EncryptionContainer, EncryptionContext };
