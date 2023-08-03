@@ -6,10 +6,11 @@ const AppRoutes= () => {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />}>            
-              <Route path="documents/new" element={<DocumentPage />} />
+          <Route path="/" element={<HomePage />}>
+            <Route path="documents/new" element={<DocumentPage />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
+          
         </Routes>
       </BrowserRouter>
     );
