@@ -1,5 +1,4 @@
 import { AuthProvider } from "react-oauth2-code-pkce";
-
 const origin =
   window.location.origin.replace(/\/$/, "") + "/";
 
@@ -20,6 +19,12 @@ const AuthConfig = {
     ) && event.login(),
   autoLogin: false,
   decodeToken: false,
+  /*preLogin: () =>
+    window.location.pathname !== "/login" &&
+    localStorage.setItem("_d_s_preLoginPath", window.location.pathname),
+  postLogin: () =>
+    window.location.replace(localStorage.getItem("_d_s_preLoginPath") || "") &&
+    localStorage.clear("_d_s_preLoginPath"),*/
 };
 
 const AppAuthProvider = (props) => {

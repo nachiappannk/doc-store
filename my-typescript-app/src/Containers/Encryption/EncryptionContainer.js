@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState, createContext } from 'react';
 import './EncryptionContainer.css';
 import sha256 from 'crypto-js/sha256';
 import CryptoJs from 'crypto-js';
+import { getGroups } from '../../Api';
+import { getProjects } from '../../Api';
 
 const EncryptionContext = createContext({});
 
@@ -48,6 +50,16 @@ const EncryptionContainer = (props) => {
   const isStringValid = (str) => {
     return (!(!(str && str.trim())));
   }
+
+  useEffect(() => {
+    
+    async function fetchData() {
+      const groups = await getGroups();
+      const projects = await getProjects();
+      console.log(groups, projects);
+    }
+    fetchData();
+  },[])
 
   return <>
     {!isContextSet ? (

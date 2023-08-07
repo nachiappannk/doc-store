@@ -4,16 +4,17 @@ import { AuthContext } from "react-oauth2-code-pkce";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileShield } from "@fortawesome/free-solid-svg-icons";
 import { faGitlab } from "@fortawesome/free-brands-svg-icons";
-import BrandLogo from "../../Components/Images/BrandLogo.svg"
+
+import { redirect } from "react-router-dom";
 
 const LoginPage = () => {
-  const { login } = useContext(AuthContext);
-  return (
-    <div>
-      <header className="absolute flex flex-row z-10 m-10 ml-24 items-center">
-        <img className="h-8 w-8 mr-1" src={BrandLogo} />
-        <p className="text-2xl font-semibold">DocuCrypt</p>
-      </header>
+  const { login, token } = useContext(AuthContext);
+  if(token){
+      redirect("/")
+  }
+  
+  return (    
+    <div>      
       <section className="container-2xl h-[100vh]  justify-center  items-center flex flex-row row-auto overflow-hidden">
         <div className="m-8 flex flex-row row-auto">
           <FontAwesomeIcon
