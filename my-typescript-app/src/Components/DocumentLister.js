@@ -12,7 +12,6 @@ const DocumentLister = (props) => {
     groupAccositedProjectList,
     clear,
   ] = useContext(EncryptionContext);
-console.log(groupAccositedProjectList);
   return (
     <>
       {token ? (

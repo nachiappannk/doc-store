@@ -71,7 +71,6 @@ const EncryptionContainer = (props) => {
   }
 
   const copyPassPhrase = async () => {
-    console.log(passPhrase)
     if ("clipboard" in navigator && passPhrase) {
       await navigator.clipboard.writeText(passPhrase);
     }
