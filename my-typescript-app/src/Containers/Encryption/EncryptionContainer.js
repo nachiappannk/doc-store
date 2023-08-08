@@ -189,7 +189,7 @@ const EncryptionContainer = (props) => {
                 </div>
                 <br />
                 <button
-                  className={`w-full h-7 text-center border-2 border-slate-300 ${
+                  className={`w-full h-7 text-center rounded border-2 border-slate-300 ${
                     !isNextEnabled
                       ? "bg-slate-300"
                       : "hover:border-slate-800 hover:bg-slate-400"
