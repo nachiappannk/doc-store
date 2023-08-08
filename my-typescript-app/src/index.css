@@ -22,13 +22,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.oval {
-    position: absolute;
-    left: 0%;
-    width: 58vw;
-    height: 100vh;
-    background: #B8DEFCFF;
-    border-radius: 0 16% 16% 0%;
-    overflow: hidden;
-}

@@ -1,6 +1,7 @@
 import { getAPI } from "../Config/ApiMethods"
-import { GetGroupsEndpoint } from "../Config/ApiContants"
+import { GetUserGroupsEndpoint } from "../Config/ApiContants";
+import { GetCurrentUser } from "./UserService";
 
 export const getGroups = async () => {
-    return await getAPI(GetGroupsEndpoint(1));
+    return getAPI(GetUserGroupsEndpoint());
 }

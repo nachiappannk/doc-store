@@ -1,11 +1,23 @@
-const BackendBaseURI = "https://gitlab.com/api/v4/projects";
+const BackendBaseURI = "https://gitlab.com/api/v4";
 
-const GetGroupsEndpoint = (userId) => {
-    return `/users/${userId}/groups`
+const GetCurrentUserEndpoint= "user"
+
+const GetUserGroupsEndpoint = () => {
+    return `groups/?owned=true`;
 }
 
-const GetProjectsEndpoint = (userId)=> {
-    return `/users/${userId}/projects`
+const GetUserProjectsEndpoint = (userId)=> {
+    return `users/${userId}/projects`
 };
 
-export { BackendBaseURI, GetGroupsEndpoint, GetProjectsEndpoint}
+const GetGroupAssociatedProjectsEndpoint = (groupId) => {
+    return `groups/${groupId}/projects`;
+}
+
+export {
+  BackendBaseURI,
+  GetCurrentUserEndpoint,
+  GetGroupAssociatedProjectsEndpoint,
+  GetUserGroupsEndpoint,
+  GetUserProjectsEndpoint,
+};

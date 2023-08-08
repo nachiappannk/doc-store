@@ -7,21 +7,20 @@ const HomePage = (props) => {
   const { token, loginInProgress } = useContext(AuthContext);
   const authContext = useContext(AuthContext);
   const name = authContext?.idTokenData?.name ?? "user";
-  console.log(authContext, props);
   if (loginInProgress) {
     return (
-      <section className="flex justify-center items-center">
-        <div className="h-40 p-4 flex justify-center items-center text-2xl ">
-          <p>Please wait while we log you in ...</p>
+      <div class="flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+        <div class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+          Please wait while we log you in ...
         </div>
-      </section>
+      </div>
     );
   }
 
   return (
     <>
       {token ? (
-        <>         
+        <>
           <Outlet />
         </>
       ) : (

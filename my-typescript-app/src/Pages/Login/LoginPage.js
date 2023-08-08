@@ -13,15 +13,15 @@ const LoginPage = () => {
       redirect("/")
   }
   
-  return (    
-    <div>      
-      <section className="container-2xl h-[100vh]  justify-center  items-center flex flex-row row-auto overflow-hidden">
-        <div className="m-8 flex flex-row row-auto">
+  return (
+    <div>
+      <section className="container-2xl h-[100vh]  justify-center  items-center flex flex-row flex-wrap">
+        <div className="m-8 mt-20 md:m-8 flex flex-row flex-wrap gap-5 justify-start  items-center w-full md:w-7/12">
           <FontAwesomeIcon
             icon={faFileShield}
-            className="w-[240px] h-[240px] text-primary-400"
+            className="w-12 h-12 md:w-[240px] md:h-[240px] text-primary-400"
           />
-          <div className="m-8 flex flex-col col-auto w-80 text-gray-500">
+          <div className="flex flex-col col-auto w-80 text-gray-500">
             <p className="text-4xl font-bold">Welcome to DocuCrypt</p>
             <p className="text-xl mt-4">
               Super charge your privacy with documents
@@ -52,7 +52,7 @@ const LoginPage = () => {
             <button>Sign up</button>
           </a>
         </div>
-        <div className="oval overflow-hidden -z-10" />
+        <div className="absolute left-0 top-0 bg-teal-950 overflow-hidden -z-10 h-1/2 w-full rounded-b-[200px] md:rounded-bl-[0px] md:rounded-br-[200px] md:rounded-r-[200px] md:h-full md:w-7/12" />
       </section>
     </div>
   );
