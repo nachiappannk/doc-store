@@ -4,7 +4,6 @@ import { BackendBaseURI } from "./ApiContants";
 const tokenKey = "ROCP_token";
 
 export const setAuthToken = (token) => {
-  console.log(token)
   localStorage.setItem(tokenKey, token);
 }
 

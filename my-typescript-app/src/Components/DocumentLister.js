@@ -1,7 +1,11 @@
-import React from "react";
+import React,{ useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "react-oauth2-code-pkce";
 import { EncryptionContext } from "../Containers";
+import { Table } from "./Table";
+import { UploadAndSeearchSection } from "../Pages/Documents/Upload&Search";
+
+
 
 const DocumentLister = (props) => {
   const { token } = useContext(AuthContext);
@@ -12,12 +16,15 @@ const DocumentLister = (props) => {
     groupAccositedProjectList,
     clear,
   ] = useContext(EncryptionContext);
+  
+
+
   return (
     <>
       {token ? (
-        <div className="relative  flex flex-row justify-center items-center ">
-          <section className="mt-52 container  max-w-4xl flex flex-col justify-center items-start w-full">
-            <div>
+        <div className="relative  flex flex-col justify-center items-center ">
+          <section className="mt-52 p-8 container max-w-4xl flex flex-col flex-wrap justify-center items-start w-full">
+            <div className="break-all">
               <span>The token: </span>
               {token}
             </div>
@@ -36,7 +43,10 @@ const DocumentLister = (props) => {
 
             <button onClick={() => clear()}>clear encryption key</button>
             <div className="w-full">
-              <ul role="list" className="divide-y divide-gray-100 hover:bg-slate-300">
+              <ul
+                role="list"
+                className="divide-y divide-gray-100 hover:bg-slate-300"
+              >
                 {groupAccositedProjectList.map((project) => {
                   return (
                     <li
@@ -44,7 +54,7 @@ const DocumentLister = (props) => {
                       key={`project_list${project.id}`}
                     >
                       <div className="flex min-w-0 gap-x-4">
-                        <div className="min-w-0 flex-auto">
+                        <div className="min-w-0 flex-auto ">
                           <p className="text-sm font-semibold leading-6 text-gray-900">
                             {project.name}
                           </p>
@@ -56,7 +66,7 @@ const DocumentLister = (props) => {
                           </p>
                         </div>
                       </div>
-                      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                      <div className="sm:flex sm:flex-col sm:items-end">
                         <p className="text-sm leading-6 text-gray-900">
                           {project.name_with_namespace}
                         </p>
@@ -79,6 +89,18 @@ const DocumentLister = (props) => {
                 })}
               </ul>
             </div>
+          </section>
+          <UploadAndSeearchSection />
+          <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">
+            <Table
+              enteries={[
+                ...[
+                  { name: "apple", id: 1 },
+                  { name: "Banana", id: 2 },
+                  { name: "Pineapple", id: 3 },
+                ],
+              ]}
+            />
           </section>
         </div>
       ) : (
