@@ -70,5 +70,6 @@ export const postAPI = async (url, data) => {
     return { status: result.status, data: await result.data };
   } catch (error) {
     console.log(error);
+    return { status: "failed"  };
   }
 };

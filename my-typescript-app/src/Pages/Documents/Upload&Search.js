@@ -80,7 +80,7 @@ export const UploadAndSeearchSection = ({ project }) => {
         console.log(file[0]);
         readFile(
           file[0],
-          (data) => pushFileToGitlab(file[0].name, data),
+          (data) => pushFileToGitlab(file, data),
           (progress) => updatefileReadProgress(i, progress)
         );
       }
@@ -94,16 +94,21 @@ export const UploadAndSeearchSection = ({ project }) => {
     setFileReadProgress(readprogressState);
   };
 
-  const pushFileToGitlab = async (filename, data) => {
+  const pushFileToGitlab = async (file, data) => {
     console.log("pushing to gitlab");
     const content = {
       branch: "master",
       content: data,
       commit_message: "create a new file",
     };
-    await createNewFileInRepository(project.id, filename, data);
+    const res = await createNewFileInRepository(project.id, file[0].name, content);
+    if(res.status !== "failed"){
+      removeSelectedFile(file);      
+    }
+    setUploading(false);
+    return;    
   };
-  console.log(project);
+
   return (
     <>
       <section className="container p-8  max-w-4xl flex flex-row   flex-wrap justify-between items-center w-full">
