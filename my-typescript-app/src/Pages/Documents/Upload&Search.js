@@ -79,8 +79,8 @@ export const UploadAndSeearchSection = ({ project }) => {
         const file = selectedFiles[i];
         console.log(file[0]);
         readFile(
-          file[0], 
-          (data) =>pushFileToGitlab(file[0].name,data),
+          file[0],
+          (data) => pushFileToGitlab(file[0].name, data),
           (progress) => updatefileReadProgress(i, progress)
         );
       }
@@ -103,7 +103,7 @@ export const UploadAndSeearchSection = ({ project }) => {
     };
     await createNewFileInRepository(project.id, filename, data);
   };
-  console.log(project)
+  console.log(project);
   return (
     <>
       <section className="container p-8  max-w-4xl flex flex-row   flex-wrap justify-between items-center w-full">
@@ -129,35 +129,46 @@ export const UploadAndSeearchSection = ({ project }) => {
       {selectedFiles && selectedFiles.length > 0 && (
         <div className="container  p-8   w-full max-w-4xl flex flex-grow">
           <div className="flex flex-col p-8  w-full justify-start items-start  bg-slate-300 ">
-            <div className="flex flex-row gap-8 mb-12 ">
-              <div className="flex flex-row gap-4">
-                {selectedFiles.map((item, i) => {
-                  return (
-                    <div key={`attchment_${i}`}>
-                      {!uploading && (
+            {!uploading && (
+              <>
+                <div className="flex flex-row gap-8 mb-12 ">
+                  <div className="flex flex-row gap-4">
+                    {selectedFiles.map((item, i) => {
+                      return (
                         <AttachmentItem
                           item={item}
                           removeSelectedFile={removeSelectedFile}
+                          key={`attchment_${i}`}
                         />
-                      )}
-                      {uploading && (
-                        <div className="flex flex-row  justify-center items-center w-[100%]">
-                          <p className="w-1/3">{item[0].name}</p>
-                          <ProgressBar progress={45} className="w-2/3" />
-                        </div>
-                      )}
+                      );
+                    })}
+                  </div>
+                </div>
+                <button
+                  className="w-auto bg-teal-600 hover:bg-teal-900 p-2 px-4 rounded text-color-3-100"
+                  onClick={uploadFiles}
+                >
+                  <Typography>submit</Typography>
+                </button>
+              </>
+            )}
+            {uploading && (
+              <>
+                {selectedFiles.map((item, i) => {
+                  return (
+                    <div
+                      key={`attchment_${i}`}
+                      className="flex flex-row flex-wrap md:flex-nowrap justify-start items-center w-full"
+                    >
+                      <p className="w-[40%] m-2">{item[0].name}</p>
+                      <ProgressBar
+                        progress={fileReadProgress[i]}
+                        className="w-[60%] m-2"
+                      />
                     </div>
                   );
                 })}
-              </div>
-            </div>
-            {!uploading && (
-              <button
-                className="w-auto bg-teal-600 hover:bg-teal-900 p-2 px-4 rounded text-color-3-100"
-                onClick={uploadFiles}
-              >
-                <Typography>submit</Typography>
-              </button>
+              </>
             )}
           </div>
         </div>
