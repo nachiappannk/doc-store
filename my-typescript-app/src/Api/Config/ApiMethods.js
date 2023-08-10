@@ -61,6 +61,7 @@ const postConfig = () => {
 export const postAPI = async (url, data) => {
   try {
     const config = postConfig()
+    console.log("postapi config", config, data);
     const result = await axios({
       config,
       url: `${BackendBaseURI}/${url}`,

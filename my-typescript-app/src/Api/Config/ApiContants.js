@@ -14,10 +14,15 @@ const GetGroupAssociatedProjectsEndpoint = (groupId) => {
     return `groups/${groupId}/projects`;
 }
 
+const GetCreateNewFileInRepositoryEndpoint = (projectId, filename ) => {
+    return `projects/${projectId}/repository/files/${filename}`;
+}
+
 export {
   BackendBaseURI,
   GetCurrentUserEndpoint,
   GetGroupAssociatedProjectsEndpoint,
+  GetCreateNewFileInRepositoryEndpoint,
   GetUserGroupsEndpoint,
   GetUserProjectsEndpoint,
 };

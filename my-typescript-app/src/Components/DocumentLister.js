@@ -1,12 +1,9 @@
-import React,{ useState } from "react";
+import React from "react";
 import { useContext } from "react";
 import { AuthContext } from "react-oauth2-code-pkce";
 import { EncryptionContext } from "../Containers";
 import { Table } from "./Table";
 import { UploadAndSeearchSection } from "../Pages/Documents/Upload&Search";
-
-
-
 const DocumentLister = (props) => {
   const { token } = useContext(AuthContext);
   const [
@@ -17,7 +14,7 @@ const DocumentLister = (props) => {
     clear,
   ] = useContext(EncryptionContext);
   
-
+ const selectedProject = groupAccositedProjectList.filter(x => x.name === projectName)
 
   return (
     <>
@@ -43,10 +40,7 @@ const DocumentLister = (props) => {
 
             <button onClick={() => clear()}>clear encryption key</button>
             <div className="w-full">
-              <ul
-                role="list"
-                className="divide-y divide-gray-100 hover:bg-slate-300"
-              >
+              <ul className="divide-y divide-gray-100 hover:bg-slate-300">
                 {groupAccositedProjectList.map((project) => {
                   return (
                     <li
@@ -90,7 +84,7 @@ const DocumentLister = (props) => {
               </ul>
             </div>
           </section>
-          <UploadAndSeearchSection />
+          <UploadAndSeearchSection project={selectedProject[0]} />
           <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">
             <Table
               enteries={[

@@ -3,16 +3,21 @@ import { SerachWithIcon } from "../../Components/Search";
 import { AttachmentItem } from "../../Components/Attachment/AttachmentItem";
 import { Typography } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-
+import { ProgressBar } from "../../Components/Progress";
+import { readFile } from "../../Utils/FileReader";
+import { createNewFileInRepository } from "../../Api/Services/ProjectsService";
 const MAX_LENGTH = 5;
 const MAX_FILE_SIZE = 5120;
 
-export const UploadAndSeearchSection = () => {
+export const UploadAndSeearchSection = ({ project }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileSize, setfileSize] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [fileReadProgress, setFileReadProgress] = useState([]);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
     let element = document.querySelector(".input-field");
+    element.value = null;
     element.click();
   };
 
@@ -57,7 +62,6 @@ export const UploadAndSeearchSection = () => {
   };
 
   const removeSelectedFile = (file) => {
-    console.log("removeFile...");
     const acceptedFiles = [...selectedFiles];
     let removedFile = acceptedFiles.filter((t) => t[0].name === file.name);
     if (removedFile && removedFile.length > 0) {
@@ -66,8 +70,40 @@ export const UploadAndSeearchSection = () => {
     }
     let removedFileSize = file.size;
     setfileSize(fileSize - removedFileSize);
-  }
+  };
 
+  const uploadFiles = () => {
+    setUploading(true);
+    if (selectedFiles && selectedFiles.length > 0) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
+        console.log(file[0]);
+        readFile(
+          file[0], 
+          (data) =>pushFileToGitlab(file[0].name,data),
+          (progress) => updatefileReadProgress(i, progress)
+        );
+      }
+    }
+  };
+
+  const updatefileReadProgress = (i, progress) => {
+    const readprogressState = [...fileReadProgress];
+    readprogressState[i] = progress;
+    console.log("updating progress", i, progress);
+    setFileReadProgress(readprogressState);
+  };
+
+  const pushFileToGitlab = async (filename, data) => {
+    console.log("pushing to gitlab");
+    const content = {
+      branch: "master",
+      content: data,
+      commit_message: "create a new file",
+    };
+    await createNewFileInRepository(project.id, filename, data);
+  };
+  console.log(project)
   return (
     <>
       <section className="container p-8  max-w-4xl flex flex-row   flex-wrap justify-between items-center w-full">
@@ -97,17 +133,32 @@ export const UploadAndSeearchSection = () => {
               <div className="flex flex-row gap-4">
                 {selectedFiles.map((item, i) => {
                   return (
-                    <AttachmentItem
-                      item={item}
-                      removeSelectedFile={removeSelectedFile}
-                    />
+                    <div key={`attchment_${i}`}>
+                      {!uploading && (
+                        <AttachmentItem
+                          item={item}
+                          removeSelectedFile={removeSelectedFile}
+                        />
+                      )}
+                      {uploading && (
+                        <div className="flex flex-row  justify-center items-center w-[100%]">
+                          <p className="w-1/3">{item[0].name}</p>
+                          <ProgressBar progress={45} className="w-2/3" />
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
             </div>
-            <button className="w-auto bg-teal-600 hover:bg-teal-900 p-2 px-4 rounded text-color-3-100">
+            {!uploading && (
+              <button
+                className="w-auto bg-teal-600 hover:bg-teal-900 p-2 px-4 rounded text-color-3-100"
+                onClick={uploadFiles}
+              >
                 <Typography>submit</Typography>
-            </button>
+              </button>
+            )}
           </div>
         </div>
       )}
