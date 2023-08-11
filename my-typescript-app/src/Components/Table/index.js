@@ -4,6 +4,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 export const Table = (props) => {
   const { enteries } = props;
+  console.log(enteries)
   return (
     <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 ">
@@ -33,7 +34,7 @@ export const Table = (props) => {
           </tr>
         </thead>
         <tbody>
-          {enteries.map((entry) => {
+          {enteries && enteries.map((entry) => {
             return (
               <tr
                 key={`file_item_${entry.id}`}
@@ -45,8 +46,8 @@ export const Table = (props) => {
                 >
                   {entry.name}
                 </th>
-                <td className="px-6 py-4"></td>
-                <td className="px-6 py-4"></td>
+                <td className="px-6 py-4">{entry.type}</td>
+                <td className="px-6 py-4">{entry.path}</td>
                 <td className="px-6 py-4"></td>
                 <td className="px-6 py-4 text-right">
                   <a

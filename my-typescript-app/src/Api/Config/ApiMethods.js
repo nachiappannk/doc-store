@@ -49,12 +49,10 @@ export const getAPIByParameter = async (url, data) => {
 
 const postConfig = () => {
   return {
-    baseUrl: BackendBaseURI,
     headers: {
       Authorization: "Bearer " + getToken(),
       "content-type": "application/json",
-    },
-    method: "POST",
+    }
   };
 };
 
@@ -62,14 +60,29 @@ export const postAPI = async (url, data) => {
   try {
     const config = postConfig()
     console.log("postapi config", config, data);
-    const result = await axios({
-      config,
-      url: `${BackendBaseURI}/${url}`,
+    const result = await axios.post(
+      `${BackendBaseURI}/${url}`,      
       data,
-    });
+      config,
+    );
     return { status: result.status, data: await result.data };
   } catch (error) {
     console.log(error);
     return { status: "failed"  };
+  }
+};
+
+export const postFormAPI = async (url, formdata) => {
+  try {
+    const config = postConfig();
+    const result = await axios.postForm(`${BackendBaseURI}/${url}`, formdata, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
+    });
+    return { status: result.status, data: await result.data };
+  } catch (error) {
+    console.log(error);
+    return { status: "failed" };
   }
 };

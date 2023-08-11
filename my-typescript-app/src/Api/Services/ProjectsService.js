@@ -1,8 +1,10 @@
-import { getAPI, postAPI } from "../Config/ApiMethods";
+import { getAPI, postAPI, postFormAPI } from "../Config/ApiMethods";
 import {
   GetUserProjectsEndpoint,
   GetGroupAssociatedProjectsEndpoint,
   GetCreateNewFileInRepositoryEndpoint,
+  GetProjectFilesListEndpoint,
+  GetUploadFileToProjectEndpoint
 } from "../Config/ApiContants";
 import { GetCurrentUser } from "./UserService";
 
@@ -18,5 +20,16 @@ export const getGroupProjects = async (groupId) => {
 };
 
 export const createNewFileInRepository = async (projectId, fileName, data) => {
-  return await postAPI(GetCreateNewFileInRepositoryEndpoint(projectId,fileName),data);
+    return await postAPI(GetCreateNewFileInRepositoryEndpoint(projectId,fileName),data);
 }
+
+export const uploadFiletoProject = async (projectId, data) => {
+  const formData = new FormData();
+  formData.append("file=", data);
+  return await postFormAPI(GetUploadFileToProjectEndpoint(projectId), data);
+};
+
+
+export const getProjectFilesList = async (projectId) => {
+  return await getAPI(GetProjectFilesListEndpoint(projectId));
+};

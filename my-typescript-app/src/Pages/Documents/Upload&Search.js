@@ -5,7 +5,10 @@ import { Typography } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import { ProgressBar } from "../../Components/Progress";
 import { readFile } from "../../Utils/FileReader";
-import { createNewFileInRepository } from "../../Api/Services/ProjectsService";
+import {
+  createNewFileInRepository,
+  uploadFiletoProject,
+} from "../../Api/Services/ProjectsService";
 const MAX_LENGTH = 5;
 const MAX_FILE_SIZE = 5120;
 
@@ -101,7 +104,9 @@ export const UploadAndSeearchSection = ({ project }) => {
       content: data,
       commit_message: "create a new file",
     };
-    const res = await createNewFileInRepository(project.id, file[0].name, content);
+   const res = await createNewFileInRepository(project.id, file[0].name, content);
+
+   //const res = await uploadFiletoProject(project.id,file[0]);
     if(res.status !== "failed"){
       removeSelectedFile(file);      
     }

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "react-oauth2-code-pkce";
 import { EncryptionContext } from "../Containers";
 import { Table } from "./Table";
 import { UploadAndSeearchSection } from "../Pages/Documents/Upload&Search";
+import { getProjectFilesList } from "../Api/Services/ProjectsService";
+
 const DocumentLister = (props) => {
   const { token } = useContext(AuthContext);
   const [
@@ -13,9 +15,24 @@ const DocumentLister = (props) => {
     groupAccositedProjectList,
     clear,
   ] = useContext(EncryptionContext);
-  
- const selectedProject = groupAccositedProjectList.filter(x => x.name === projectName)
 
+  const [projectFilesList, setProjectFilesList] = useState([])
+  
+ const selectedProject = groupAccositedProjectList
+  .filter(x => x.name === projectName)
+  
+
+ 
+
+  useEffect(() => {
+    const getProjectFiles = async () => {
+      const {data: fileList} = await getProjectFilesList(selectedProject[0].id);
+      setProjectFilesList(fileList);
+    };
+    if (selectedProject) {
+      getProjectFiles();
+    }
+  }, []);
   return (
     <>
       {token ? (
@@ -86,15 +103,7 @@ const DocumentLister = (props) => {
           </section>
           <UploadAndSeearchSection project={selectedProject[0]} />
           <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">
-            <Table
-              enteries={[
-                ...[
-                  { name: "apple", id: 1 },
-                  { name: "Banana", id: 2 },
-                  { name: "Pineapple", id: 3 },
-                ],
-              ]}
-            />
+            <Table enteries={projectFilesList} />
           </section>
         </div>
       ) : (
