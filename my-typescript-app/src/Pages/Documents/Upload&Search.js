@@ -100,9 +100,10 @@ export const UploadAndSeearchSection = ({ project }) => {
   const pushFileToGitlab = async (file, data) => {
     console.log("pushing to gitlab");
     const content = {
-      branch: "master",
-      content: data,
+      branch: "main",
+      content: btoa(data),
       commit_message: "create a new file",
+      encoding: "base64"
     };
    const res = await createNewFileInRepository(project.id, file[0].name, content);
 
