@@ -3,15 +3,18 @@ import { SerachWithIcon } from "../../Components/Search";
 import { AttachmentItem } from "../../Components/Attachment/AttachmentItem";
 import { Typography } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import { ProgressBar } from "../../Components/Progress";
+import {
+  ProgressBarWithLoader
+} from "../../Components/Progress";
 import { readFile } from "../../Utils/FileReader";
 import {
   createNewFileInRepository,
 } from "../../Api/Services/ProjectsService";
+
 const MAX_LENGTH = 5;
 const MAX_FILE_SIZE = 5120;
 
-export const UploadAndSeearchSection = ({ project }) => {
+export const UploadAndSeearchSection = ({ project, onUpload }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileSize, setfileSize] = useState(0);
   const [uploading, setUploading] = useState(false);
@@ -77,16 +80,22 @@ export const UploadAndSeearchSection = ({ project }) => {
   const uploadFiles = () => {
     setUploading(true);
     if (selectedFiles && selectedFiles.length > 0) {
+      initializeFileReadProgress(selectedFiles.length);
       for (let i = 0; i < selectedFiles.length; i++) {
-        const file = selectedFiles[i];
+        const file = selectedFiles[i][0];
         readFile(
-          file[0],
+          file,
           (data) => pushFileToGitlab(file, data),
           (progress) => updatefileReadProgress(i, progress)
         );
       }
     }
   };
+
+  const initializeFileReadProgress = (fileCount)=> {
+    const arr = Array(fileCount).fill(0);
+    setFileReadProgress(arr);
+  }
 
   const updatefileReadProgress = (i, progress) => {
     const readprogressState = [...fileReadProgress];
@@ -101,14 +110,11 @@ export const UploadAndSeearchSection = ({ project }) => {
       commit_message: "create a new file",
       encoding: "base64",
     };
-    const res = await createNewFileInRepository(
-      project.id,
-      file[0].name,
-      content
-    );
-    if (res.status !== "failed") {
+    const res = await createNewFileInRepository(project.id, file.name, content);
+    if (res.status === 201) {
       removeSelectedFile(file);
-    }
+    }    
+    await onUpload();
     setUploading(false);
     return;
   };
@@ -169,14 +175,15 @@ export const UploadAndSeearchSection = ({ project }) => {
                       key={`attchment_${i}`}
                       className="flex flex-row flex-wrap md:flex-nowrap justify-start items-center w-full"
                     >
-                      <p className="w-[40%] m-2">{item[0].name}</p>
-                      <ProgressBar
+                      <p className="w-[30%] m-2 text-ellipsis">{item[0].name}</p>
+                      <ProgressBarWithLoader
                         progress={fileReadProgress[i]}
-                        className="w-[60%] m-2"
+                        className="w-[70%] m-2"
                       />
                     </div>
                   );
                 })}
+                
               </>
             )}
           </div>

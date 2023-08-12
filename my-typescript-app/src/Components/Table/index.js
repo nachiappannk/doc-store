@@ -1,9 +1,18 @@
+import { useState } from 'react'
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-
+import { Loader } from '../Progress';
 export const Table = (props) => {
-  const { enteries, deleteMethod } = props;
+  const { enteries, deleteEntry, onDelete, loading = false } = props;
+  const [eneryDeleting , setEntryDeleteing] = useState(false);
+
+  const handleDelete = async (entryTitle) => {
+    setEntryDeleteing(true);
+    await deleteEntry(entryTitle);
+    await onDelete()
+    setEntryDeleteing(false)
+  }
   return (
     <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 ">
@@ -14,12 +23,6 @@ export const Table = (props) => {
             </th>
             <th scope="col" className="px-6 py-3">
               Type
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Size
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Last Modified
             </th>
             <th scope="col" className="px-6 py-3">
               <span className="sr-only">Download</span>
@@ -47,8 +50,6 @@ export const Table = (props) => {
                     {entry.name}
                   </th>
                   <td className="px-6 py-4">{entry.type}</td>
-                  <td className="px-6 py-4">{entry.path}</td>
-                  <td className="px-6 py-4"></td>
                   <td className="px-6 py-4 text-right">
                     <button className="font-medium text-blue-600  hover:underline">
                       <FileDownloadOutlinedIcon />
@@ -62,7 +63,7 @@ export const Table = (props) => {
 
                   <td className="px-6 py-4 text-right">
                     <button
-                      onClick={() => deleteMethod(entry.name)}
+                      onClick={() => handleDelete(entry.name)}
                       className="font-medium text-blue-600  hover:underline"
                     >
                       <DeleteOutlinedIcon />
@@ -73,6 +74,7 @@ export const Table = (props) => {
             })}
         </tbody>
       </table>
+      <Loader loading={eneryDeleting || loading} />      
     </div>
   );
 };
