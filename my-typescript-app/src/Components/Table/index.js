@@ -50,31 +50,23 @@ export const Table = (props) => {
                   <td className="px-6 py-4">{entry.path}</td>
                   <td className="px-6 py-4"></td>
                   <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600  hover:underline"
-                    >
+                    <button className="font-medium text-blue-600  hover:underline">
                       <FileDownloadOutlinedIcon />
-                    </a>
+                    </button>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600  hover:underline"
-                    >
+                    <button className="font-medium text-blue-600  hover:underline">
                       <EditOutlinedIcon />
-                    </a>
+                    </button>
                   </td>
 
                   <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
+                    <button
+                      onClick={() => deleteMethod(entry.name)}
                       className="font-medium text-blue-600  hover:underline"
                     >
-                      <button onClick={() => deleteMethod(entry.name)}>
-                        <DeleteOutlinedIcon />
-                      </button>
-                    </a>
+                      <DeleteOutlinedIcon />
+                    </button>
                   </td>
                 </tr>
               );

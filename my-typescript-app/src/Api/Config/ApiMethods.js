@@ -59,7 +59,6 @@ const postConfig = () => {
 export const postAPI = async (url, data) => {
   try {
     const config = postConfig();
-    console.log("postapi config", config, data);
     const result = await axios.post(`${BackendBaseURI}/${url}`, data, config);
     return { status: result.status, data: await result.data };
   } catch (error) {
@@ -71,7 +70,6 @@ export const postAPI = async (url, data) => {
 export const deleteAPI = async (url, data) => {
   try {
     const config = postConfig();
-    console.log("postapi config", config, data);
     const result = await axios.delete(`${BackendBaseURI}/${url}`, {
       headers: config.headers,
       data: data,
@@ -85,7 +83,6 @@ export const deleteAPI = async (url, data) => {
 
 export const postFormAPI = async (url, formdata) => {
   try {
-    const config = postConfig();
     const result = await axios.postForm(`${BackendBaseURI}/${url}`, formdata, {
       headers: {
         Authorization: "Bearer " + getToken(),
