@@ -4,7 +4,6 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 export const Table = (props) => {
   const { enteries, deleteMethod } = props;
-  console.log(enteries);
   return (
     <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 ">

@@ -80,7 +80,6 @@ export const UploadAndSeearchSection = ({ project }) => {
     if (selectedFiles && selectedFiles.length > 0) {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
-        console.log(file[0]);
         readFile(
           file[0],
           (data) => pushFileToGitlab(file, data),
@@ -93,12 +92,10 @@ export const UploadAndSeearchSection = ({ project }) => {
   const updatefileReadProgress = (i, progress) => {
     const readprogressState = [...fileReadProgress];
     readprogressState[i] = progress;
-    console.log("updating progress", i, progress);
     setFileReadProgress(readprogressState);
   };
 
   const pushFileToGitlab = async (file, data) => {
-    console.log("pushing to gitlab");
     const content = {
       branch: "main",
       content: btoa(data),

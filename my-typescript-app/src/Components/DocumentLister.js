@@ -30,7 +30,6 @@ const DocumentLister = (props) => {
       const { data: fileList } = await getProjectFilesList(
         selectedProject[0].id
       );
-      console.log(fileList);
       setProjectFilesList(fileList);
     };
     if (selectedProject) {
