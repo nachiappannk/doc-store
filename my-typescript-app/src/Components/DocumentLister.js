@@ -112,6 +112,7 @@ const DocumentLister = (props) => {
           <UploadAndSeearchSection
             project={selectedProject}
             onUpload={getProjectFiles}
+            encryptionKey={encryptionKey}
             loading={loading}
           />
           <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">

@@ -1,3 +1,4 @@
+import CryptoJS from "crypto-js";
 import { getAPI, postAPI, postFormAPI, deleteAPI } from "../Config/ApiMethods";
 import {
   GetUserProjectsEndpoint,
@@ -6,7 +7,18 @@ import {
   GetProjectFilesListEndpoint,
   GetUploadFileToProjectEndpoint,
 } from "../Config/ApiContants";
+
 import { GetCurrentUser } from "./UserService";
+
+function sha256(message) {
+  var hash = CryptoJS.SHA256(message);
+  return hash.toString(CryptoJS.enc.Hex);
+}
+
+function encodedFilename(fileName, encryptionKey) {
+  let encodedFileName = btoa(fileName).replace("/", "-").replace("+", "_").replace("=", "!") + "." + sha256(encryptionKey);
+  return encodedFileName;
+}
 
 export const getProjects = async () => {
   return await GetCurrentUser().then((userId) =>
@@ -18,9 +30,11 @@ export const getGroupProjects = async (groupId) => {
   return await getAPI(GetGroupAssociatedProjectsEndpoint(groupId));
 };
 
-export const createNewFileInRepository = async (projectId, fileName, data) => {
+export const createNewFileInRepository = async (projectId, fileName, data, encryptionKey) => {
+  var encodedFileName = encodedFilename(fileName, encryptionKey);
+  console.log(encodedFileName);
   return await postAPI(
-    GetCreateNewFileInRepositoryEndpoint(projectId, fileName),
+    GetCreateNewFileInRepositoryEndpoint(projectId, encodedFileName),
     data
   );
 };
