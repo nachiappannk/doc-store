@@ -4,7 +4,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Loader } from '../Progress';
 export const Table = (props) => {
-  const { enteries, deleteEntry, onDelete, loading = false } = props;
+  const { enteries, deleteEntry, downloadMethod, onDelete, loading = false } = props;
   const [eneryDeleting , setEntryDeleteing] = useState(false);
 
   const handleDelete = async (entryTitle) => {
@@ -51,7 +51,7 @@ export const Table = (props) => {
                   </th>
                   <td className="px-6 py-4">{entry.type}</td>
                   <td className="px-6 py-4 text-right">
-                    <button className="font-medium text-blue-600  hover:underline">
+                    <button onClick={() => downloadMethod(entry.name)} className="font-medium text-blue-600  hover:underline">
                       <FileDownloadOutlinedIcon />
                     </button>
                   </td>
