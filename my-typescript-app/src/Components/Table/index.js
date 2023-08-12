@@ -3,7 +3,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 export const Table = (props) => {
-  const { enteries, deleteMethod } = props;
+  const { enteries, deleteMethod, downloadMethod } = props;
   return (
     <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 ">
@@ -50,7 +50,7 @@ export const Table = (props) => {
                   <td className="px-6 py-4">{entry.path}</td>
                   <td className="px-6 py-4"></td>
                   <td className="px-6 py-4 text-right">
-                    <button className="font-medium text-blue-600  hover:underline">
+                    <button onClick={() => downloadMethod(entry.name)} className="font-medium text-blue-600  hover:underline">
                       <FileDownloadOutlinedIcon />
                     </button>
                   </td>

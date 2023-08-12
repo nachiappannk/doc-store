@@ -7,6 +7,7 @@ import { UploadAndSeearchSection } from "../Pages/Documents/Upload&Search";
 import {
   getProjectFilesList,
   deleteProjectFile,
+  downloadProjectFile,
 } from "../Api/Services/ProjectsService";
 
 const DocumentLister = (props) => {
@@ -111,6 +112,9 @@ const DocumentLister = (props) => {
               deleteMethod={(filename) =>
                 deleteProjectFile(selectedProject[0].id, filename)
               }
+              downloadMethod={(fileName) => {
+                downloadProjectFile(selectedProject[0].id, fileName);
+              }}
             />
           </section>
         </div>

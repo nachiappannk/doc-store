@@ -35,6 +35,16 @@ export const getProjectFilesList = async (projectId) => {
   return await getAPI(GetProjectFilesListEndpoint(projectId));
 };
 
+export const downloadProjectFile = async (projectId, fileName) =>{
+  const blob = new Blob(["fileData"], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.download = "user-info.json";
+  link.href = url;
+  link.click();
+};
+
+
 export const deleteProjectFile = async (projectId, fileName) => {
   return await deleteAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, fileName),
