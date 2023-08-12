@@ -121,7 +121,7 @@ const DocumentLister = (props) => {
                 await deleteProjectFile(selectedProject.id, filename)
               }
               downloadMethod={(fileName) => {
-                downloadProjectFile(selectedProject[0].id, fileName);
+                downloadProjectFile(selectedProject.id, fileName);
               }}
               onDelete={getProjectFiles}
             />
