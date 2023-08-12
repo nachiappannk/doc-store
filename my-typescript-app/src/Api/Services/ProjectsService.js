@@ -36,10 +36,14 @@ export const getProjectFilesList = async (projectId) => {
 };
 
 export const downloadProjectFile = async (projectId, fileName) =>{
-  const blob = new Blob(["fileData"], { type: "text/plain" });
+
+  let result = await getAPI(GetCreateNewFileInRepositoryEndpoint(projectId, fileName)+"?ref=main");
+  let base64_string = result.data.content;
+  let byteArray = Uint8Array.from(atob(base64_string), c => c.charCodeAt(0))
+  const blob = new Blob([byteArray], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
-  link.download = "user-info.json";
+  link.download = fileName;
   link.href = url;
   link.click();
 };
