@@ -1,4 +1,4 @@
-import { getAPI, postAPI, postFormAPI } from "../Config/ApiMethods";
+import { getAPI, postAPI, postFormAPI, deleteAPI } from "../Config/ApiMethods";
 import {
   GetUserProjectsEndpoint,
   GetGroupAssociatedProjectsEndpoint,
@@ -32,4 +32,8 @@ export const uploadFiletoProject = async (projectId, data) => {
 
 export const getProjectFilesList = async (projectId) => {
   return await getAPI(GetProjectFilesListEndpoint(projectId));
+};
+
+export const deleteProjectFile = async (projectId, fileName) => {
+  return await deleteAPI(GetCreateNewFileInRepositoryEndpoint(projectId,fileName),{"branch" : "main", "commit_message" : "deleteing", "file_path" : fileName});
 };

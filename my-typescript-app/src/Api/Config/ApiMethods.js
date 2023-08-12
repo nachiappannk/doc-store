@@ -72,6 +72,20 @@ export const postAPI = async (url, data) => {
   }
 };
 
+export const deleteAPI = async (url, data) => {
+  try {
+    const config = postConfig()
+    console.log("postapi config", config, data);
+    const result = await axios.delete(
+      `${BackendBaseURI}/${url}`, {headers: config.headers, data: data}      
+    );
+    return { status: result.status, data: await result.data };
+  } catch (error) {
+    console.log(error);
+    return { status: "failed"  };
+  }
+};
+
 export const postFormAPI = async (url, formdata) => {
   try {
     const config = postConfig();

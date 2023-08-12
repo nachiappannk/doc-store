@@ -3,7 +3,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 export const Table = (props) => {
-  const { enteries } = props;
+  const { enteries, deleteMethod } = props;
   console.log(enteries)
   return (
     <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
@@ -71,7 +71,7 @@ export const Table = (props) => {
                     href="#"
                     className="font-medium text-blue-600  hover:underline"
                   >
-                    <DeleteOutlinedIcon />
+                    <button onClick={()=> deleteMethod(entry.name) }><DeleteOutlinedIcon /></button>
                   </a>
                 </td>
               </tr>
