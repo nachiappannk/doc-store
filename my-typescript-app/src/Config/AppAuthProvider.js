@@ -1,9 +1,7 @@
 import { AuthProvider } from "react-oauth2-code-pkce";
-const origin =
-  window.location.origin.replace(/\/$/, "") + "/";
+const origin = window.location.origin.replace(/\/$/, "") + "/";
 
-const login =
-  window.location.origin.replace(/\/$/, "") + "/login";
+const login = window.location.origin.replace(/\/$/, "") + "/login";
 
 const AuthConfig = {
   clientId: "6eb6e1f06303fb4a94296cc3452564cb01801b4e964422509497519a7fea65e4",
@@ -18,13 +16,7 @@ const AuthConfig = {
       "Session expired. Refresh page to continue using the site?"
     ) && event.login(),
   autoLogin: false,
-  decodeToken: false,
-  /*preLogin: () =>
-    window.location.pathname !== "/login" &&
-    localStorage.setItem("_d_s_preLoginPath", window.location.pathname),
-  postLogin: () =>
-    window.location.replace(localStorage.getItem("_d_s_preLoginPath") || "") &&
-    localStorage.clear("_d_s_preLoginPath"),*/
+  decodeToken: false
 };
 
 const AppAuthProvider = (props) => {

@@ -4,7 +4,10 @@ import { AuthContext } from "react-oauth2-code-pkce";
 import { EncryptionContext } from "../Containers";
 import { Table } from "./Table";
 import { UploadAndSeearchSection } from "../Pages/Documents/Upload&Search";
-import { getProjectFilesList } from "../Api/Services/ProjectsService";
+import {
+  getProjectFilesList,
+  deleteProjectFile,
+} from "../Api/Services/ProjectsService";
 
 const DocumentLister = (props) => {
   const { token } = useContext(AuthContext);
@@ -16,17 +19,17 @@ const DocumentLister = (props) => {
     clear,
   ] = useContext(EncryptionContext);
 
-  const [projectFilesList, setProjectFilesList] = useState([])
-  
- const selectedProject = groupAccositedProjectList
-  .filter(x => x.name === projectName)
-  
+  const [projectFilesList, setProjectFilesList] = useState([]);
 
- 
+  const selectedProject = groupAccositedProjectList.filter(
+    (x) => x.name === projectName
+  );
 
   useEffect(() => {
     const getProjectFiles = async () => {
-      const {data: fileList} = await getProjectFilesList(selectedProject[0].id);
+      const { data: fileList } = await getProjectFilesList(
+        selectedProject[0].id
+      );
       setProjectFilesList(fileList);
     };
     if (selectedProject) {
@@ -103,7 +106,12 @@ const DocumentLister = (props) => {
           </section>
           <UploadAndSeearchSection project={selectedProject[0]} />
           <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">
-            <Table enteries={projectFilesList} />
+            <Table
+              enteries={projectFilesList}
+              deleteMethod={(filename) =>
+                deleteProjectFile(selectedProject[0].id, filename)
+              }
+            />
           </section>
         </div>
       ) : (

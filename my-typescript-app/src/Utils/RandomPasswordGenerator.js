@@ -1,4 +1,4 @@
-export const genPassword= (length) => {
+export const genPassword = (length) => {
   var chars =
     "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   var passwordLength = length || 24;
@@ -7,6 +7,5 @@ export const genPassword= (length) => {
     var randomNumber = Math.floor(Math.random() * chars.length);
     password += chars.substring(randomNumber, randomNumber + 1);
   }
-  return password
-}
-
+  return password;
+};

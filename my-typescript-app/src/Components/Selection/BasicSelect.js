@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import FormControl from "@mui/material/FormControl/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem/MenuItem";
@@ -18,7 +18,7 @@ export const BasicSelect = (props) => {
             backgroundColor: "#ffffff",
             border: "2px solid #f0f0f0 ",
             borderRadius: 2,
-            px: 2
+            px: 2,
           }}
         >
           {props.lists.map((item) => (

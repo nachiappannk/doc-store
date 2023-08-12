@@ -7,7 +7,6 @@ import { ProgressBar } from "../../Components/Progress";
 import { readFile } from "../../Utils/FileReader";
 import {
   createNewFileInRepository,
-  uploadFiletoProject,
 } from "../../Api/Services/ProjectsService";
 const MAX_LENGTH = 5;
 const MAX_FILE_SIZE = 5120;
@@ -80,7 +79,6 @@ export const UploadAndSeearchSection = ({ project }) => {
     if (selectedFiles && selectedFiles.length > 0) {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
-        console.log(file[0]);
         readFile(
           file[0],
           (data) => pushFileToGitlab(file, data),
@@ -93,26 +91,26 @@ export const UploadAndSeearchSection = ({ project }) => {
   const updatefileReadProgress = (i, progress) => {
     const readprogressState = [...fileReadProgress];
     readprogressState[i] = progress;
-    console.log("updating progress", i, progress);
     setFileReadProgress(readprogressState);
   };
 
   const pushFileToGitlab = async (file, data) => {
-    console.log("pushing to gitlab");
     const content = {
       branch: "main",
       content: btoa(data),
       commit_message: "create a new file",
-      encoding: "base64"
+      encoding: "base64",
     };
-   const res = await createNewFileInRepository(project.id, file[0].name, content);
-
-   //const res = await uploadFiletoProject(project.id,file[0]);
-    if(res.status !== "failed"){
-      removeSelectedFile(file);      
+    const res = await createNewFileInRepository(
+      project.id,
+      file[0].name,
+      content
+    );
+    if (res.status !== "failed") {
+      removeSelectedFile(file);
     }
     setUploading(false);
-    return;    
+    return;
   };
 
   return (
