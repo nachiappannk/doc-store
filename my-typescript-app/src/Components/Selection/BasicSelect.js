@@ -18,7 +18,7 @@ export const BasicSelect = (props) => {
             backgroundColor: "#ffffff",
             border: "2px solid #f0f0f0 ",
             borderRadius: 2,
-            px: 2
+            px: 2,
           }}
         >
           {props.lists.map((item) => (

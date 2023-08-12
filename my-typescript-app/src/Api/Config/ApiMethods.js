@@ -5,13 +5,13 @@ const tokenKey = "ROCP_token";
 
 export const setAuthToken = (token) => {
   localStorage.setItem(tokenKey, token);
-}
+};
 
 export const clearAuthToken = (token) => {
   localStorage.clear(tokenKey);
 };
 
-const getToken = () => localStorage.getItem(tokenKey).replaceAll("\"","");
+const getToken = () => localStorage.getItem(tokenKey).replaceAll('"', "");
 
 const getConfig = () => {
   return {
@@ -52,37 +52,34 @@ const postConfig = () => {
     headers: {
       Authorization: "Bearer " + getToken(),
       "content-type": "application/json",
-    }
+    },
   };
 };
 
 export const postAPI = async (url, data) => {
   try {
-    const config = postConfig()
+    const config = postConfig();
     console.log("postapi config", config, data);
-    const result = await axios.post(
-      `${BackendBaseURI}/${url}`,      
-      data,
-      config,
-    );
+    const result = await axios.post(`${BackendBaseURI}/${url}`, data, config);
     return { status: result.status, data: await result.data };
   } catch (error) {
     console.log(error);
-    return { status: "failed"  };
+    return { status: "failed" };
   }
 };
 
 export const deleteAPI = async (url, data) => {
   try {
-    const config = postConfig()
+    const config = postConfig();
     console.log("postapi config", config, data);
-    const result = await axios.delete(
-      `${BackendBaseURI}/${url}`, {headers: config.headers, data: data}      
-    );
+    const result = await axios.delete(`${BackendBaseURI}/${url}`, {
+      headers: config.headers,
+      data: data,
+    });
     return { status: result.status, data: await result.data };
   } catch (error) {
     console.log(error);
-    return { status: "failed"  };
+    return { status: "failed" };
   }
 };
 

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useState, createContext } from "react";
-import "./EncryptionContainer.css";
 import sha256 from "crypto-js/sha256";
 import CryptoJs from "crypto-js";
 import { getGroups } from "../../Api";
@@ -27,7 +26,7 @@ const EncryptionContainer = (props) => {
 
   const handleGroupNameChange = async (event) => {
     setGroupName(event.target.value);
-    handleNext(event.target.value, projectName, passPhrase);    
+    handleNext(event.target.value, projectName, passPhrase);
     await fetchProjectData(event.target.value);
   };
 
@@ -39,7 +38,7 @@ const EncryptionContainer = (props) => {
   const handlePassPhraseChange = (event) => {
     let passPhraseLocal = event.target.value ?? "";
     setPassPhrase(passPhraseLocal);
-    generateVerificationCode(passPhraseLocal)
+    generateVerificationCode(passPhraseLocal);
   };
   const generateVerificationCode = (passPhraseLocal) => {
     let sha256Code = sha256(passPhraseLocal);
@@ -55,7 +54,7 @@ const EncryptionContainer = (props) => {
     let isValid = true;
     isValid = isValid && isStringValid(gName);
     isValid = isValid && isStringValid(pName);
-    setIsPassPhraseEnabled(isValid)
+    setIsPassPhraseEnabled(isValid);
     isValid = isValid && isStringValid(pp);
     setIsNextEnabled(isValid);
   };
@@ -68,151 +67,155 @@ const EncryptionContainer = (props) => {
     const ppGenerated = genPassword();
     setPassPhrase(ppGenerated);
     generateVerificationCode(ppGenerated);
-  }
+  };
 
   const copyPassPhrase = async () => {
     if ("clipboard" in navigator && passPhrase) {
       await navigator.clipboard.writeText(passPhrase);
     }
-  }
+  };
   useEffect(() => {
     async function fetchData() {
       await getGroups().then(({ data }) => {
-        setGroupList(data)
+        setGroupList(data);
       });
     }
     fetchData();
   }, []);
 
-  
   const fetchProjectData = async (gName) => {
-      const group = groupList.filter((x) => x.name === gName);
-      await getGroupProjects(group[0].id).then(({ data }) => {
-        setGroupAccositedPProjectList(data);
-      });
-  }
+    const group = groupList.filter((x) => x.name === gName);
+    await getGroupProjects(group[0].id).then(({ data }) => {
+      setGroupAccositedPProjectList(data);
+    });
+  };
 
   const handleSetEncryption = () => {
-    setIsContextSet(true)
-
-  }
+    setIsContextSet(true);
+  };
 
   const clearEncryption = () => {
     setIsContextSet(false);
   };
 
-  if (groupList === []){
+  if (groupList === []) {
     <div className="flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
         loading...
       </div>
     </div>;
   }
-    return (
-      <>
-        {!isContextSet ? (
-          <>
-            <div className="relative  flex flex-row justify-center items-center ">
-              <div className="mt-52 flex flex-col justify-center items-start">
-                <div className="w-full">
-                  <label htmlFor="group-select-outlined">Group Name</label>
-                  <BasicSelect
-                    Id="group-select-outlined"
-                    value={groupName}
-                    lists={groupList}
-                    setDropdownValue={handleGroupNameChange}
-                  />
-                </div>
+  return (
+    <>
+      {!isContextSet ? (
+        <>
+          <div className="relative  flex flex-row justify-center items-center ">
+            <div className="mt-52 flex flex-col justify-center items-start">
+              <div className="w-full">
+                <label htmlFor="group-select-outlined">Group Name</label>
+                <BasicSelect
+                  Id="group-select-outlined"
+                  value={groupName}
+                  lists={groupList}
+                  setDropdownValue={handleGroupNameChange}
+                />
+              </div>
+              <br />
+              <div className="w-full">
+                <label htmlFor="project-select-outlined">Project Name</label>
+                <BasicSelect
+                  Id="project-select-outlined"
+                  value={projectName}
+                  lists={groupAccositedProjectList}
+                  setDropdownValue={handleProjectNameChange}
+                />
+              </div>
+              <br />
+              <div className="w-full">
+                <label htmlFor="passphrase">Encryption Pass Phrase</label>
                 <br />
-                <div className="w-full">
-                  <label htmlFor="project-select-outlined">Project Name</label>
-                  <BasicSelect
-                    Id="project-select-outlined"
-                    value={projectName}
-                    lists={groupAccositedProjectList}
-                    setDropdownValue={handleProjectNameChange}
-                  />
-                </div>
-                <br />
-                <div className="w-full">
-                  <label htmlFor="passphrase">Encryption Pass Phrase</label>
-                  <br />
-                  <input
-                    type="password"
-                    id="passphrase"
-                    value={passPhrase}
-                    disabled={!isPassPhraseEnabled}
-                    onChange={handlePassPhraseChange}
-                    className="w-full h-7 px-3 mt-2 rounded border-2 border-slate-300"
-                  />
-                  <br />
-                  <button
-                    className={`text-sm p-1 mt-2 rounded border-2 border-slate-300 ${
-                      !isPassPhraseEnabled
-                        ? "bg-slate-300"
-                        : "hover:border-slate-800 hover:bg-slate-400"
-                    } `}
-                    onClick={genrateRandomKey}
-                    disabled={!isPassPhraseEnabled}
-                  >
-                    Generate
-                  </button>
-                  <button
-                    disabled={!isPassPhraseEnabled}
-                    onClick={copyPassPhrase}
-                    className={` ${
-                      !isPassPhraseEnabled ? "" : "hover:text-color-3-700"
-                    } `}
-                  >
-                    <ContentCopyIcon
-                      sx={{
-                        p: 0.5,
-                        mx: 1,
-                        height: 32,
-                      }}
-                      onClick={copyPassPhrase}
-                    />
-                  </button>
-                </div>
-                <br />
-                <div className="w-full">
-                  <label htmlFor="verification-code">Verification Code</label>
-                  <br />
-                  <input
-                    type="text"
-                    id="verification-code"
-                    readOnly={true}
-                    value={verificationCode}
-                    disabled={!isPassPhraseEnabled}
-                    className="h-7 w-full mt-2 px-3 rounded border-2 border-slate-300"
-                  />
-                </div>
+                <input
+                  type="password"
+                  id="passphrase"
+                  value={passPhrase}
+                  disabled={!isPassPhraseEnabled}
+                  onChange={handlePassPhraseChange}
+                  className="w-full h-7 px-3 mt-2 rounded border-2 border-slate-300"
+                />
                 <br />
                 <button
-                  className={`w-full h-7 text-center rounded border-2 border-slate-300 ${
-                    !isNextEnabled
+                  className={`text-sm p-1 mt-2 rounded border-2 border-slate-300 ${
+                    !isPassPhraseEnabled
                       ? "bg-slate-300"
                       : "hover:border-slate-800 hover:bg-slate-400"
                   } `}
-                  disabled={!isNextEnabled}
-                  onClick={handleSetEncryption}
+                  onClick={genrateRandomKey}
+                  disabled={!isPassPhraseEnabled}
                 >
-                  Set Encryption Key
+                  Generate
+                </button>
+                <button
+                  disabled={!isPassPhraseEnabled}
+                  onClick={copyPassPhrase}
+                  className={` ${
+                    !isPassPhraseEnabled ? "" : "hover:text-color-3-700"
+                  } `}
+                >
+                  <ContentCopyIcon
+                    sx={{
+                      p: 0.5,
+                      mx: 1,
+                      height: 32,
+                    }}
+                    onClick={copyPassPhrase}
+                  />
                 </button>
               </div>
+              <br />
+              <div className="w-full">
+                <label htmlFor="verification-code">Verification Code</label>
+                <br />
+                <input
+                  type="text"
+                  id="verification-code"
+                  readOnly={true}
+                  value={verificationCode}
+                  disabled={!isPassPhraseEnabled}
+                  className="h-7 w-full mt-2 px-3 rounded border-2 border-slate-300"
+                />
+              </div>
+              <br />
+              <button
+                className={`w-full h-7 text-center rounded border-2 border-slate-300 ${
+                  !isNextEnabled
+                    ? "bg-slate-300"
+                    : "hover:border-slate-800 hover:bg-slate-400"
+                } `}
+                disabled={!isNextEnabled}
+                onClick={handleSetEncryption}
+              >
+                Set Encryption Key
+              </button>
             </div>
-          </>
-        ) : (
-          <>
-            <EncryptionContext.Provider
-              value={[groupName, projectName, passPhrase, groupAccositedProjectList, clearEncryption]}
-            >
-              <div>{props.children}</div>
-            </EncryptionContext.Provider>
-          </>
-        )}
-      </>
-    );
+          </div>
+        </>
+      ) : (
+        <>
+          <EncryptionContext.Provider
+            value={[
+              groupName,
+              projectName,
+              passPhrase,
+              groupAccositedProjectList,
+              clearEncryption,
+            ]}
+          >
+            <div>{props.children}</div>
+          </EncryptionContext.Provider>
+        </>
+      )}
+    </>
+  );
 };
 
 export { EncryptionContext, EncryptionContainer };

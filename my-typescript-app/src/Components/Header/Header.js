@@ -10,9 +10,9 @@ export const Header = () => {
   const name = authContext?.idTokenData?.name ?? "user";
   const location = useLocation();
   const handleLogout = () => {
-    logOut()
-    clearAuthToken()
-  }
+    logOut();
+    clearAuthToken();
+  };
 
   if (location.pathname === "/login") {
     return (

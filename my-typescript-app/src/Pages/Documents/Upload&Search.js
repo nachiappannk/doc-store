@@ -103,16 +103,20 @@ export const UploadAndSeearchSection = ({ project }) => {
       branch: "main",
       content: btoa(data),
       commit_message: "create a new file",
-      encoding: "base64"
+      encoding: "base64",
     };
-   const res = await createNewFileInRepository(project.id, file[0].name, content);
+    const res = await createNewFileInRepository(
+      project.id,
+      file[0].name,
+      content
+    );
 
-   //const res = await uploadFiletoProject(project.id,file[0]);
-    if(res.status !== "failed"){
-      removeSelectedFile(file);      
+    //const res = await uploadFiletoProject(project.id,file[0]);
+    if (res.status !== "failed") {
+      removeSelectedFile(file);
     }
     setUploading(false);
-    return;    
+    return;
   };
 
   return (

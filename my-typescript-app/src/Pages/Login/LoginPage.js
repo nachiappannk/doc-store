@@ -9,10 +9,10 @@ import { redirect } from "react-router-dom";
 
 const LoginPage = () => {
   const { login, token } = useContext(AuthContext);
-  if(token){
-      redirect("/")
+  if (token) {
+    redirect("/");
   }
-  
+
   return (
     <div>
       <section className="container-2xl h-[100vh]  justify-center  items-center flex flex-row flex-wrap">

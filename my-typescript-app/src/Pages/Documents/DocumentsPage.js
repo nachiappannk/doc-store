@@ -2,12 +2,11 @@ import { EncryptionContainer } from "../../Containers";
 import { DocumentLister } from "../../Components";
 
 const DocumentPage = () => {
-
-    return (
-        <EncryptionContainer>
-            <DocumentLister/>
-        </EncryptionContainer>
-    )
-}
+  return (
+    <EncryptionContainer>
+      <DocumentLister />
+    </EncryptionContainer>
+  );
+};
 
 export { DocumentPage };
