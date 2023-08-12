@@ -19,19 +19,23 @@ const DocumentLister = (props) => {
     clear,
   ] = useContext(EncryptionContext);
 
+  const [loading, setLoading ] = useState(false)
   const [projectFilesList, setProjectFilesList] = useState([]);
 
   const selectedProject = groupAccositedProjectList.filter(
     (x) => x.name === projectName
-  );
+  )[0];
 
-  useEffect(() => {
-    const getProjectFiles = async () => {
+  const getProjectFiles = async () => {
+      setLoading(true)
       const { data: fileList } = await getProjectFilesList(
-        selectedProject[0].id
+        selectedProject.id
       );
       setProjectFilesList(fileList);
+      setLoading(false)
     };
+
+  useEffect(() => {    
     if (selectedProject) {
       getProjectFiles();
     }
@@ -104,13 +108,18 @@ const DocumentLister = (props) => {
               </ul>
             </div>
           </section>
-          <UploadAndSeearchSection project={selectedProject[0]} />
+          <UploadAndSeearchSection
+            project={selectedProject}
+            onUpload={getProjectFiles}
+            loading={loading}
+          />
           <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">
             <Table
               enteries={projectFilesList}
-              deleteMethod={(filename) =>
-                deleteProjectFile(selectedProject[0].id, filename)
+              deleteEntry={async (filename) =>
+                await deleteProjectFile(selectedProject.id, filename)
               }
+              onDelete={getProjectFiles}
             />
           </section>
         </div>
