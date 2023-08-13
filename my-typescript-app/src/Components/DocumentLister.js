@@ -121,7 +121,7 @@ const DocumentLister = (props) => {
             <Table
               enteries={projectFilesList}
               deleteEntry={async (filename) =>
-                await deleteProjectFile(selectedProject.id, filename)
+                await deleteProjectFile(selectedProject.id, filename, encryptionKey)
               }
               downloadMethod={(fileName) => {
                 downloadProjectFile(selectedProject.id, fileName);

@@ -118,9 +118,10 @@ export const downloadProjectFile = async (projectId, fileName) =>{
 };
 
 
-export const deleteProjectFile = async (projectId, fileName) => {
+export const deleteProjectFile = async (projectId, fileName, encryptionKey) => {
+  let encodedName = encodedFilename(fileName, encryptionKey);
   return await deleteAPI(
-    GetCreateNewFileInRepositoryEndpoint(projectId, fileName),
-    { branch: "main", commit_message: "deleteing", file_path: fileName }
+    GetCreateNewFileInRepositoryEndpoint(projectId, encodedName),
+    { branch: "main", commit_message: "deleteing", file_path: encodedName }
   );
 };
