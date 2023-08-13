@@ -20,6 +20,16 @@ function encodedFilename(fileName, encryptionKey) {
   return encodedFileName;
 }
 
+function isValidBase64(str) {
+  try {
+    const decodedString = atob(str);    
+    const reEncodedString = btoa(decodedString);
+    return reEncodedString === str;
+  } catch (error) {
+    return false;
+  }
+}
+
 export const getProjects = async () => {
   return await GetCurrentUser().then((userId) =>
     getAPI(GetUserProjectsEndpoint(userId))
@@ -45,8 +55,23 @@ export const uploadFiletoProject = async (projectId, data) => {
   return await postFormAPI(GetUploadFileToProjectEndpoint(projectId), data);
 };
 
-export const getProjectFilesList = async (projectId) => {
-  return await getAPI(GetProjectFilesListEndpoint(projectId));
+export const getProjectFilesList = async (projectId, encryptionKey) => {
+  let files = await getAPI(GetProjectFilesListEndpoint(projectId));
+  
+  files.data.forEach(function(element) {
+    let name = element.name;
+    let parts = element.name.split(".");
+    if(parts.length != 2){
+      element.isValid = false;
+    } else if (!isValidBase64(parts[0])){
+
+    } else {
+      
+      let decodedName = element.name.replace("-", "/").replace("_", "+").replace("!", "=").atob();
+    }
+  });
+  console.log(files);
+  return files;
 };
 
 export const downloadProjectFile = async (projectId, fileName) =>{
