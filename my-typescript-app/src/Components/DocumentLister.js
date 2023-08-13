@@ -31,7 +31,7 @@ const DocumentLister = (props) => {
   const getProjectFiles = async () => {
       setLoading(true)
       const { data: fileList } = await getProjectFilesList(selectedProject.id, encryptionKey);
-      let matchedFiles = fileList.filter((x) => x.isValid == true);
+      const matchedFiles = fileList.filter((x) => x.isValid == true);
       setNumFilteredFiles(fileList.length - matchedFiles.length);
       setProjectFilesList(matchedFiles);
       setLoading(false)
