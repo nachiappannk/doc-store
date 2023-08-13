@@ -36,7 +36,7 @@ function encodedFilename(fileName, encryptionKey) {
 }
 
 function getFileNameAndEncryptionHash(encodedFileName){
-  let parts = element.name.split(".");
+  let parts = encodedFileName.split(".");
   if(parts.length != 2){
     return {
       isValidFileName : false,
@@ -55,7 +55,7 @@ function getFileNameAndEncryptionHash(encodedFileName){
   return {
     isValidFileName : true,
     fileName: fileName,
-    encryptionHash: part[1],
+    encryptionHash: parts[1],
   }
 }
 
@@ -90,15 +90,21 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
   let files = await getAPI(GetProjectFilesListEndpoint(projectId));
   
   files.data.forEach(function(element) {
+    console.log('start');
     let fileNameAndEncryptionHash = getFileNameAndEncryptionHash(element.name);
+    console.log(fileNameAndEncryptionHash);
     if(fileNameAndEncryptionHash.isValidFileName == false){
       element.isValid = false;
-    }else if(fileNameAndEncryptionHash != getFileSuffix(encryptionKey)){
+    }else if(fileNameAndEncryptionHash.encryptionHash != getFileSuffix(encryptionKey)){
       element.isValid = false;
+      console.log(" un matched");
     }else{
       element.isValid = true;
-      element.name = fileNameAndEncryptionHash(fileNameAndEncryptionHash.fileName);
+      console.log("matched");
+      element.name = fileNameAndEncryptionHash.fileName;
     }
+    console.log(element);
+    console.log("end");
   });
   return files;
 };
