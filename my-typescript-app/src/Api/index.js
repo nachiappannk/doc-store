@@ -6,14 +6,15 @@ import {
   postAPI,
 } from "./Config/ApiMethods";
 import { getGroups } from "./Services/GroupsService";
-import { getProjects } from "./Services/ProjectsService";
+import { getAllAccesibleUserProjects,getUserProjects } from "./Services/ProjectsService";
 import { GetCurrentUser } from "./Services/UserService";
 export {
   setAuthToken,
   clearAuthToken,
   GetCurrentUser,
   getGroups,
-  getProjects,
+  getAllAccesibleUserProjects,
+  getUserProjects,
   getAPI,
   getAPIByParameter,
   postAPI,

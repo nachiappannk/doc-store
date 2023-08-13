@@ -1,4 +1,5 @@
 import HomePage from "./Home/HomePage";
 import LoginPage from "./Login/LoginPage";
 import { DocumentPage } from "./Documents/DocumentsPage";
-export { LoginPage, HomePage, DocumentPage };
+import { TextEditor, EditExistingFile } from "./Documents/ReactEditor";
+export { LoginPage, HomePage, DocumentPage, TextEditor, EditExistingFile };

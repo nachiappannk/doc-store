@@ -3,9 +3,9 @@ import { DocumentLister } from "../../Components";
 
 const DocumentPage = () => {
   return (
-    <EncryptionContainer>
+    <>
       <DocumentLister />
-    </EncryptionContainer>
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem/MenuItem";
 export const BasicSelect = (props) => {
   return (
     <>
-      <FormControl variant="standard" fullWidth>
+      <FormControl variant="standard" fullWidth sx={{ mt: 1}}>
         <Select
           labelId="select-outlined-label"
           id={props.Id}
@@ -14,15 +14,18 @@ export const BasicSelect = (props) => {
           onChange={props.setDropdownValue}
           variant="standard"
           disableUnderline={true}
+          readOnly={props.disabled}
+          disabled={props.disabled}
           sx={{
             backgroundColor: "#ffffff",
             border: "2px solid #f0f0f0 ",
             borderRadius: 2,
             px: 2,
+            height: "1.9rem"
           }}
         >
           {props.lists.map((item) => (
-            <MenuItem key={item.id} value={item.name}>
+            <MenuItem key={item.id} value={item}>
               {item.name}
             </MenuItem>
           ))}

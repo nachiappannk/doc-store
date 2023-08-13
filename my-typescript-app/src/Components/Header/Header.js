@@ -16,14 +16,14 @@ export const Header = () => {
 
   if (location.pathname === "/login") {
     return (
-      <header className="absolute flex flex-row z-10 md:m-10 md:ml-24 m-4 items-start w-full">
+      <header className="absolute top-0 left-0 flex flex-row z-10 md:m-10 md:ml-24 m-4 items-start w-full">
         <img className="h-8 w-8 mr-1" alt="brandLogo" src={BrandLogo} />
         <p className="text-2xl text-color-3-100 font-semibold">DocuCrypt</p>
       </header>
     );
   }
   return (
-    <header className="absolute flex justify-center z-10 w-full items-center bg-teal-950 text-color-3-100">
+    <header className="absolute top-0 left-0 flex justify-center z-10 w-full items-center bg-teal-950 text-color-3-100">
       <section className="flex p-8 max-w-5xl w-full justify-between items-center">
         <div className="flex flex-row flex-nowrap justify-center items-center">
           <img src={BrandLogo} alt="brandLogo" className="h-12 m-2" />

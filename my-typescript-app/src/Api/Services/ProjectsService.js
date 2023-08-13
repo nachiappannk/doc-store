@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js";
 import { getAPI, postAPI, postFormAPI, deleteAPI } from "../Config/ApiMethods";
 import {
+  GetAllAccesibleUserProjectsEndpoint,
   GetUserProjectsEndpoint,
   GetGroupAssociatedProjectsEndpoint,
   GetCreateNewFileInRepositoryEndpoint,
@@ -23,7 +24,7 @@ const getFileName = (prefix) => {
   try{
     const convertedPrefix = prefix.replace("-","/").replace("_", "+").replace("!", "=");
     const fileName = atob(convertedPrefix);
-    if(getFilePrefix(fileName) == prefix) return fileName;
+    if(getFilePrefix(fileName) === prefix) return fileName;
     return "";
   }catch(error){
     return "";
@@ -37,7 +38,7 @@ const encodedFilename = (fileName, encryptionKey) => {
 
 const getFileNameAndEncryptionHash = (encodedFileName) => {
   const parts = encodedFileName.split(".");
-  if(parts.length != 2){
+  if(parts.length !== 2){
     return {
       isValidFileName : false,
       fileName: "",
@@ -45,7 +46,7 @@ const getFileNameAndEncryptionHash = (encodedFileName) => {
     }
   }
   const fileName = getFileName(parts[0]);
-  if(fileName == ""){
+  if(fileName === ""){
     return {
       isValidFileName : false,
       fileName: "",
@@ -59,9 +60,11 @@ const getFileNameAndEncryptionHash = (encodedFileName) => {
   }
 }
 
+export const getAllAccesibleUserProjects = async() => {
+  return await getAPI(GetAllAccesibleUserProjectsEndpoint());
+}
 
-
-export const getProjects = async () => {
+export const getUserProjects = async () => {
   return await GetCurrentUser().then((userId) =>
     getAPI(GetUserProjectsEndpoint(userId))
   );
@@ -91,9 +94,9 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
   
   files.data.forEach(function(element) {
     let fileNameAndEncryptionHash = getFileNameAndEncryptionHash(element.name);
-    if(fileNameAndEncryptionHash.isValidFileName == false){
+    if(fileNameAndEncryptionHash.isValidFileName === false){
       element.isValid = false;
-    }else if(fileNameAndEncryptionHash.encryptionHash != getFileSuffix(encryptionKey)){
+    }else if(fileNameAndEncryptionHash.encryptionHash !== getFileSuffix(encryptionKey)){
       element.isValid = false;
     }else{
       element.isValid = true;
@@ -115,6 +118,19 @@ export const downloadProjectFile = async (projectId, fileName, encryptionKey) =>
   link.download = fileName;
   link.href = url;
   link.click();
+};
+
+export const getProjectFileData = async (
+  projectId,
+  fileName,
+  encryptionKey
+) => {
+  const encodedName = encodedFilename(fileName, encryptionKey);
+  const result = await getAPI(
+    GetCreateNewFileInRepositoryEndpoint(projectId, encodedName) + "?ref=main"
+  );
+  const base64_string = result.data.content;
+  return atob(base64_string)
 };
 
 
