@@ -104,9 +104,12 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
   return files;
 };
 
-export const downloadProjectFile = async (projectId, fileName) =>{
-
-  let result = await getAPI(GetCreateNewFileInRepositoryEndpoint(projectId, fileName)+"?ref=main");
+export const downloadProjectFile = async (projectId, fileName, encryptionKey) =>{
+  console.log(fileName);
+  console.log(encryptionKey);
+  let encodedName = encodedFilename(fileName, encryptionKey);
+  console.log(encodedName);
+  let result = await getAPI(GetCreateNewFileInRepositoryEndpoint(projectId, encodedName)+"?ref=main");
   let base64_string = result.data.content;
   let byteArray = Uint8Array.from(atob(base64_string), c => c.charCodeAt(0))
   const blob = new Blob([byteArray], { type: "text/plain" });
