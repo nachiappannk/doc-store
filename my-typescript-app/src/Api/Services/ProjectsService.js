@@ -10,19 +10,19 @@ import {
 
 import { GetCurrentUser } from "./UserService";
 
-function getFileSuffix(encryptionKey) {
-  var hash = CryptoJS.SHA256(encryptionKey);
+const getFileSuffix = (encryptionKey) => {
+  const hash = CryptoJS.SHA256(encryptionKey);
   return hash.toString(CryptoJS.enc.Hex);
 }
 
-function getFilePrefix(fileName) {
+const getFilePrefix = (fileName) => {
   return btoa(fileName).replace("/", "-").replace("+", "_").replace("=", "!");
 }
 
-function getFileName(prefix) {
+const getFileName = (prefix) => {
   try{
-    let convertedPrefix = prefix.replace("-","/").replace("_", "+").replace("!", "=");
-    let fileName = atob(convertedPrefix);
+    const convertedPrefix = prefix.replace("-","/").replace("_", "+").replace("!", "=");
+    const fileName = atob(convertedPrefix);
     if(getFilePrefix(fileName) == prefix) return fileName;
     return "";
   }catch(error){
@@ -30,13 +30,13 @@ function getFileName(prefix) {
   }
 }
 
-function encodedFilename(fileName, encryptionKey) {
-  let encodedFileName = getFilePrefix(fileName) + "." + getFileSuffix(encryptionKey);
+const encodedFilename = (fileName, encryptionKey) => {
+  const encodedFileName = getFilePrefix(fileName) + "." + getFileSuffix(encryptionKey);
   return encodedFileName;
 }
 
-function getFileNameAndEncryptionHash(encodedFileName){
-  let parts = encodedFileName.split(".");
+const getFileNameAndEncryptionHash = (encodedFileName) => {
+  const parts = encodedFileName.split(".");
   if(parts.length != 2){
     return {
       isValidFileName : false,
@@ -44,7 +44,7 @@ function getFileNameAndEncryptionHash(encodedFileName){
       encryptionHash: "",
     }
   }
-  let fileName = getFileName(parts[0]);
+  const fileName = getFileName(parts[0]);
   if(fileName == ""){
     return {
       isValidFileName : false,
@@ -72,7 +72,7 @@ export const getGroupProjects = async (groupId) => {
 };
 
 export const createNewFileInRepository = async (projectId, fileName, data, encryptionKey) => {
-  var encodedFileName = encodedFilename(fileName, encryptionKey);
+  const encodedFileName = encodedFilename(fileName, encryptionKey);
   console.log(encodedFileName);
   return await postAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedFileName),
@@ -87,7 +87,7 @@ export const uploadFiletoProject = async (projectId, data) => {
 };
 
 export const getProjectFilesList = async (projectId, encryptionKey) => {
-  let files = await getAPI(GetProjectFilesListEndpoint(projectId));
+  const files = await getAPI(GetProjectFilesListEndpoint(projectId));
   
   files.data.forEach(function(element) {
     let fileNameAndEncryptionHash = getFileNameAndEncryptionHash(element.name);
@@ -105,10 +105,10 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
 };
 
 export const downloadProjectFile = async (projectId, fileName, encryptionKey) =>{
-  let encodedName = encodedFilename(fileName, encryptionKey);
-  let result = await getAPI(GetCreateNewFileInRepositoryEndpoint(projectId, encodedName)+"?ref=main");
-  let base64_string = result.data.content;
-  let byteArray = Uint8Array.from(atob(base64_string), c => c.charCodeAt(0))
+  const encodedName = encodedFilename(fileName, encryptionKey);
+  const result = await getAPI(GetCreateNewFileInRepositoryEndpoint(projectId, encodedName)+"?ref=main");
+  const base64_string = result.data.content;
+  const byteArray = Uint8Array.from(atob(base64_string), c => c.charCodeAt(0))
   const blob = new Blob([byteArray], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -119,7 +119,7 @@ export const downloadProjectFile = async (projectId, fileName, encryptionKey) =>
 
 
 export const deleteProjectFile = async (projectId, fileName, encryptionKey) => {
-  let encodedName = encodedFilename(fileName, encryptionKey);
+  const encodedName = encodedFilename(fileName, encryptionKey);
   return await deleteAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedName),
     { branch: "main", commit_message: "deleteing", file_path: encodedName }
