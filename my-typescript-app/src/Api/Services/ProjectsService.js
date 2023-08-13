@@ -90,21 +90,16 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
   let files = await getAPI(GetProjectFilesListEndpoint(projectId));
   
   files.data.forEach(function(element) {
-    console.log('start');
     let fileNameAndEncryptionHash = getFileNameAndEncryptionHash(element.name);
     console.log(fileNameAndEncryptionHash);
     if(fileNameAndEncryptionHash.isValidFileName == false){
       element.isValid = false;
     }else if(fileNameAndEncryptionHash.encryptionHash != getFileSuffix(encryptionKey)){
       element.isValid = false;
-      console.log(" un matched");
     }else{
       element.isValid = true;
-      console.log("matched");
       element.name = fileNameAndEncryptionHash.fileName;
     }
-    console.log(element);
-    console.log("end");
   });
   return files;
 };
