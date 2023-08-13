@@ -22,6 +22,7 @@ const DocumentLister = (props) => {
 
   const [loading, setLoading ] = useState(false)
   const [projectFilesList, setProjectFilesList] = useState([]);
+  const [numFilteredFiles, setNumFilteredFiles] = useState(0);
 
   const selectedProject = groupAccositedProjectList.filter(
     (x) => x.name === projectName
@@ -30,8 +31,8 @@ const DocumentLister = (props) => {
   const getProjectFiles = async () => {
       setLoading(true)
       const { data: fileList } = await getProjectFilesList(selectedProject.id, encryptionKey);
-      console.log(fileList);
       let matchedFiles = fileList.filter((x) => x.isValid == true);
+      setNumFilteredFiles(fileList.length - matchedFiles.length);
       setProjectFilesList(matchedFiles);
       setLoading(false)
     };
@@ -116,6 +117,7 @@ const DocumentLister = (props) => {
             loading={loading}
           />
           <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">
+            <div>[Place holder Bad UI]the number of files filtered due to encryption key is {numFilteredFiles}</div>
             <Table
               enteries={projectFilesList}
               deleteEntry={async (filename) =>
