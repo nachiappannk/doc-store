@@ -14,7 +14,7 @@ import {
 const MAX_LENGTH = 5;
 const MAX_FILE_SIZE = 5120;
 
-export const UploadAndSeearchSection = ({ project, onUpload }) => {
+export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileSize, setfileSize] = useState(0);
   const [uploading, setUploading] = useState(false);
@@ -110,7 +110,7 @@ export const UploadAndSeearchSection = ({ project, onUpload }) => {
       commit_message: "create a new file",
       encoding: "base64",
     };
-    const res = await createNewFileInRepository(project.id, file.name, content);
+    const res = await createNewFileInRepository(project.id, file.name, content, encryptionKey);
     if (res.status === 201) {
       removeSelectedFile(file);
     }    
