@@ -10,25 +10,56 @@ import {
 
 import { GetCurrentUser } from "./UserService";
 
-function sha256(message) {
-  var hash = CryptoJS.SHA256(message);
+function getFileSuffix(encryptionKey) {
+  var hash = CryptoJS.SHA256(encryptionKey);
   return hash.toString(CryptoJS.enc.Hex);
 }
 
+function getFilePrefix(fileName) {
+  return btoa(fileName).replace("/", "-").replace("+", "_").replace("=", "!");
+}
+
+function getFileName(prefix) {
+  try{
+    let convertedPrefix = prefix.replace("-","/").replace("_", "+").replace("!", "=");
+    let fileName = atob(convertedPrefix);
+    if(getFilePrefix(fileName) == prefix) return fileName;
+    return "";
+  }catch(error){
+    return "";
+  }
+}
+
 function encodedFilename(fileName, encryptionKey) {
-  let encodedFileName = btoa(fileName).replace("/", "-").replace("+", "_").replace("=", "!") + "." + sha256(encryptionKey);
+  let encodedFileName = getFilePrefix(fileName) + "." + getFileSuffix(encryptionKey);
   return encodedFileName;
 }
 
-function isValidBase64(str) {
-  try {
-    const decodedString = atob(str);    
-    const reEncodedString = btoa(decodedString);
-    return reEncodedString === str;
-  } catch (error) {
-    return false;
+function getFileNameAndEncryptionHash(encodedFileName){
+  let parts = element.name.split(".");
+  if(parts.length != 2){
+    return {
+      isValidFileName : false,
+      fileName: "",
+      encryptionHash: "",
+    }
+  }
+  let fileName = getFileName(parts[0]);
+  if(fileName == ""){
+    return {
+      isValidFileName : false,
+      fileName: "",
+      encryptionHash: "",
+    }
+  }
+  return {
+    isValidFileName : true,
+    fileName: fileName,
+    encryptionHash: part[1],
   }
 }
+
+
 
 export const getProjects = async () => {
   return await GetCurrentUser().then((userId) =>
@@ -59,18 +90,16 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
   let files = await getAPI(GetProjectFilesListEndpoint(projectId));
   
   files.data.forEach(function(element) {
-    let name = element.name;
-    let parts = element.name.split(".");
-    if(parts.length != 2){
+    let fileNameAndEncryptionHash = getFileNameAndEncryptionHash(element.name);
+    if(fileNameAndEncryptionHash.isValidFileName == false){
       element.isValid = false;
-    } else if (!isValidBase64(parts[0])){
-
-    } else {
-      
-      let decodedName = element.name.replace("-", "/").replace("_", "+").replace("!", "=").atob();
+    }else if(fileNameAndEncryptionHash != getFileSuffix(encryptionKey)){
+      element.isValid = false;
+    }else{
+      element.isValid = true;
+      element.name = fileNameAndEncryptionHash(fileNameAndEncryptionHash.fileName);
     }
   });
-  console.log(files);
   return files;
 };
 
