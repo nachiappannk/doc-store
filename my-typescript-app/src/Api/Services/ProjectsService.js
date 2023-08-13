@@ -91,7 +91,6 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
   
   files.data.forEach(function(element) {
     let fileNameAndEncryptionHash = getFileNameAndEncryptionHash(element.name);
-    console.log(fileNameAndEncryptionHash);
     if(fileNameAndEncryptionHash.isValidFileName == false){
       element.isValid = false;
     }else if(fileNameAndEncryptionHash.encryptionHash != getFileSuffix(encryptionKey)){
@@ -100,6 +99,7 @@ export const getProjectFilesList = async (projectId, encryptionKey) => {
       element.isValid = true;
       element.name = fileNameAndEncryptionHash.fileName;
     }
+    element.id = element.path;
   });
   return files;
 };
