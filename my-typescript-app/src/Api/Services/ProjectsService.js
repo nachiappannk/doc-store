@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { getAPI, postAPI, postFormAPI, deleteAPI } from "../Config/ApiMethods";
+import { getAPI, postAPI, postFormAPI, putAPI, deleteAPI } from "../Config/ApiMethods";
 import {
   GetAllAccesibleUserProjectsEndpoint,
   GetUserProjectsEndpoint,
@@ -133,6 +133,16 @@ export const getProjectFileData = async (
   return atob(base64_string)
 };
 
+export const updateProjectFile = async (
+  projectId, fileName, data, encryptionKey
+) => {
+  const encodedName = encodedFilename(fileName, encryptionKey);
+  return await putAPI(
+    GetCreateNewFileInRepositoryEndpoint(projectId, encodedName),
+    data
+  );
+  
+};
 
 export const deleteProjectFile = async (projectId, fileName, encryptionKey) => {
   const encodedName = encodedFilename(fileName, encryptionKey);

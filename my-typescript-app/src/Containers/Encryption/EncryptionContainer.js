@@ -116,7 +116,6 @@ const EncryptionContainer = (props) => {
       </div>
     );
   }
-  console.log(showPopup)
   return (
     <EncryptionContext.Provider
       value={[

@@ -1,21 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Editor } from "react-draft-wysiwyg";
-import {
-  EditorState,
-  ContentState,
-  convertToRaw,
-  convertFromRaw,
-} from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { Typography } from "@mui/material";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./ReactEditor.css";
 
 import { EncryptionContext } from "../../Containers";
 import { Loader } from "../../Components/Progress";
-import { AlertWithAction } from "../../Components/Alerts";
 import {
   createNewFileInRepository,
+  updateProjectFile,
   getProjectFileData,
 } from "../../Api/Services/ProjectsService";
 
@@ -49,40 +44,51 @@ export const TextEditor = (props) => {
       navigate("/");
     }
   };
+
   const saveFile = async () => {
     setUploading(true);
     const data = convertToRaw(editorState.getCurrentContent());
-    console.log(data);
+    const isUpdateFile = props.fileName || false;
     const content = {
       branch: "main",
-      content: btoa(data),
-      commit_message: "create a new file",
+      content: btoa(JSON.stringify(data)),
+      commit_message: isUpdateFile ? "updating file" : "create a new file",
       encoding: "base64",
     };
-    const res = await createNewFileInRepository(
-      selectedProject.id,
-      fileName + ".raw",
-      content,
-      encryptionKey
-    );
+    let res;
+    if (isUpdateFile) {
+      res = await updateProjectFile(
+        selectedProject.id,
+        fileName,
+        content,
+        encryptionKey
+      );
+    } else {
+      res = await createNewFileInRepository(
+        selectedProject.id,
+        fileName + ".raw",
+        content,
+        encryptionKey
+      );
+    }
 
+    if (res.status === 201 || res.status === 200 ) {
+      setFileEdited(false);
+    }
     setUploading(false);
-    setFileEdited(false);
   };
+
+  const updateFile = () => {};
 
   const fetchAndUpdateFileData = async () => {
     setUploading(true);
     setFileName(props.fileName);
-    console.log("filenameSet");
     const data = await getProjectFileData(
       selectedProject.id,
       props.fileName,
       encryptionKey
     );
-    console.log("datafecth");
-    console.log(data);
-    const rawData = convertFromRaw(data);
-    console.log("raw converted");
+    const rawData = convertFromRaw(JSON.parse(data));
     const editorState = EditorState.createWithContent(rawData);
     setEditorState(editorState);
     setUploading(false);
@@ -90,7 +96,6 @@ export const TextEditor = (props) => {
 
   useEffect(() => {
     if (props.fileName) {
-      console.log("initiating fecth");
       fetchAndUpdateFileData();
     }
   }, []);

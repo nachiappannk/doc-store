@@ -67,6 +67,17 @@ export const postAPI = async (url, data) => {
   }
 };
 
+export const putAPI = async (url, data) => {
+  try {
+    const config = postConfig();
+    const result = await axios.put(`${BackendBaseURI}/${url}`, data, config);
+    return { status: result.status, data: await result.data };
+  } catch (error) {
+    console.log(error);
+    return { status: "failed" };
+  }
+};
+
 export const deleteAPI = async (url, data) => {
   try {
     const config = postConfig();
