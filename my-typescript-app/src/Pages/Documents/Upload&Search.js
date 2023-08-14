@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { SerachWithIcon } from "../../Components/Search";
 import { AttachmentItem } from "../../Components/Attachment/AttachmentItem";
 import { Typography } from "@mui/material";
@@ -11,7 +12,8 @@ import {
   createNewFileInRepository,
 } from "../../Api/Services/ProjectsService";
 
-const MAX_LENGTH = 5;
+/** not working for file size more than 1 fix later */
+const MAX_LENGTH = 1;
 const MAX_FILE_SIZE = 5120;
 
 export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) => {
@@ -121,24 +123,32 @@ export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) =>
 
   return (
     <>
-      <section className="container p-8  max-w-4xl flex flex-row   flex-wrap justify-between items-center w-full">
-        <button
-          className="flex flex-row p-2.5 gap-4 my-4 w-full md:w-auto justify-center items-start bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:ring-blue-500 hover:border-blue-500"
-          onClick={handleClick}
-        >
-          <FileUploadOutlinedIcon />
-          <Typography>Upload Document</Typography>
-          <input
-            id="file-upload"
-            type="file"
-            hidden
-            multiple
-            className="input-field"
-            onChange={(e) => {
-              selectFiles(e);
-            }}
-          ></input>
-        </button>
+      <section className="container p-8  max-w-4xl flex flex-row   flex-wrap  justify-between items-center w-full">
+        <div className="flex flex-row gap-0 md:gap-4 w-full md:w-auto flex-wrap md:flex-nowrap">
+          <button
+            className="flex flex-row p-2.5 gap-4 my-4 w-full md:w-auto justify-center items-start bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:ring-blue-500 hover:border-blue-500"
+            onClick={handleClick}
+          >
+            <FileUploadOutlinedIcon />
+            <Typography>Upload Document</Typography>
+            <input
+              id="file-upload"
+              type="file"
+              hidden
+              multiple
+              className="input-field"
+              onChange={(e) => {
+                selectFiles(e);
+              }}
+            ></input>
+          </button>
+          <Link
+            className="flex flex-row p-2.5 px-4 gap-4 my-4 w-full md:w-auto justify-center items-start bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:ring-blue-500 hover:border-blue-500"
+            to={"/new-file"}
+          >
+            <Typography>Create New</Typography>
+          </Link>
+        </div>
         <SerachWithIcon />
       </section>
       {selectedFiles && selectedFiles.length > 0 && (
@@ -175,7 +185,9 @@ export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) =>
                       key={`attchment_${i}`}
                       className="flex flex-row flex-wrap md:flex-nowrap justify-start items-center w-full"
                     >
-                      <p className="w-[30%] m-2 text-ellipsis">{item[0].name}</p>
+                      <p className="w-[30%] m-2 text-ellipsis">
+                        {item[0].name}
+                      </p>
                       <ProgressBarWithLoader
                         progress={fileReadProgress[i]}
                         className="w-[70%] m-2"
@@ -183,7 +195,6 @@ export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) =>
                     </div>
                   );
                 })}
-                
               </>
             )}
           </div>

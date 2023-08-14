@@ -10,28 +10,20 @@ import {
   downloadProjectFile,
 } from "../Api/Services/ProjectsService";
 
+import { AlertBar } from "./Alerts";
+
 const DocumentLister = (props) => {
   const { token } = useContext(AuthContext);
-  const [
-    groupName,
-    projectName,
-    encryptionKey,
-    groupAccositedProjectList,
-    clear,
-  ] = useContext(EncryptionContext);
-
+  const [selectedProject , encryptionKey, groupAccositedProjectList] =
+    useContext(EncryptionContext);
   const [loading, setLoading ] = useState(false)
   const [projectFilesList, setProjectFilesList] = useState([]);
   const [numFilteredFiles, setNumFilteredFiles] = useState(0);
 
-  const selectedProject = groupAccositedProjectList.filter(
-    (x) => x.name === projectName
-  )[0];
-
   const getProjectFiles = async () => {
       setLoading(true)
       const { data: fileList } = await getProjectFilesList(selectedProject.id, encryptionKey);
-      const matchedFiles = fileList.filter((x) => x.isValid == true);
+      const matchedFiles = fileList.filter((x) => x.isValid === true);
       setNumFilteredFiles(fileList.length - matchedFiles.length);
       setProjectFilesList(matchedFiles);
       setLoading(false)
@@ -45,26 +37,21 @@ const DocumentLister = (props) => {
   return (
     <>
       {token ? (
-        <div className="relative  flex flex-col justify-center items-center ">
-          <section className="mt-52 p-8 container max-w-4xl flex flex-col flex-wrap justify-center items-start w-full">
+        <div className="flex flex-col justify-center items-center w-full ">
+          <section className="container p-8 md:p-0 flex flex-col flex-wrap justify-center items-start w-full">
             <div className="break-all">
               <span>The token: </span>
               {token}
             </div>
             <div>
-              <span>The Group: </span>
-              {groupName}
-            </div>
-            <div>
               <span>The project: </span>
-              {projectName}
+              {selectedProject.name}
             </div>
             <div>
               <span>The EncryptionKey: </span>
               {encryptionKey}
             </div>
-
-            <button onClick={() => clear()}>clear encryption key</button>
+            <hr className="h-px my-8 bg-gray-400 border-0 w-full" />
             <div className="w-full">
               <ul className="divide-y divide-gray-100 hover:bg-slate-300">
                 {groupAccositedProjectList.map((project) => {
@@ -110,21 +97,35 @@ const DocumentLister = (props) => {
               </ul>
             </div>
           </section>
+
+          <hr className="h-px my-8 bg-gray-400 border-0 w-full" />
           <UploadAndSeearchSection
             project={selectedProject}
             onUpload={getProjectFiles}
             encryptionKey={encryptionKey}
             loading={loading}
           />
-          <section className="m-4 my-8 p-8 container max-w-4xl flex flex-col justify-center items-center w-full">
-            <div>[Place holder Bad UI]the number of files filtered due to encryption key is {numFilteredFiles}</div>
+          <section className="m-4 my-8 p-8 md:p-0 container flex flex-col justify-center items-center w-full">
+            <AlertBar
+              variant="info"
+              message={`${numFilteredFiles} more files filtered which are not matching this encryption key`}
+            />
+            <br />
             <Table
               enteries={projectFilesList}
               deleteEntry={async (filename) =>
-                await deleteProjectFile(selectedProject.id, filename, encryptionKey)
+                await deleteProjectFile(
+                  selectedProject.id,
+                  filename,
+                  encryptionKey
+                )
               }
               downloadMethod={(fileName) => {
-                downloadProjectFile(selectedProject.id, fileName, encryptionKey);
+                downloadProjectFile(
+                  selectedProject.id,
+                  fileName,
+                  encryptionKey
+                );
               }}
               onDelete={getProjectFiles}
             />

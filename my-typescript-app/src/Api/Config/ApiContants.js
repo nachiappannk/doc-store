@@ -6,6 +6,10 @@ const GetUserGroupsEndpoint = () => {
   return `groups/?owned=true`;
 };
 
+const GetAllAccesibleUserProjectsEndpoint = () => {
+  return `projects?min_access_level=30`;
+}
+
 const GetUserProjectsEndpoint = (userId) => {
   return `users/${userId}/projects`;
 };
@@ -35,4 +39,5 @@ export {
   GetProjectFilesListEndpoint,
   GetUserGroupsEndpoint,
   GetUserProjectsEndpoint,
+  GetAllAccesibleUserProjectsEndpoint,
 };

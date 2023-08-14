@@ -1,18 +1,27 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { Loader } from '../Progress';
+import { Loader } from "../Progress";
 export const Table = (props) => {
-  const { enteries, deleteEntry, downloadMethod, onDelete, loading = false } = props;
-  const [eneryDeleting , setEntryDeleteing] = useState(false);
+  const {
+    enteries,
+    deleteEntry,
+    downloadMethod,
+    onDelete,
+    loading = false,
+  } = props;
+  const [eneryDeleting, setEntryDeleteing] = useState(false);
+  const navigate = useNavigate();
 
   const handleDelete = async (entryTitle) => {
     setEntryDeleteing(true);
     await deleteEntry(entryTitle);
-    await onDelete()
-    setEntryDeleteing(false)
-  }
+    await onDelete();
+    setEntryDeleteing(false);
+  };
+  
   return (
     <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left text-gray-500 ">
@@ -51,14 +60,22 @@ export const Table = (props) => {
                   </th>
                   <td className="px-6 py-4">{entry.type}</td>
                   <td className="px-6 py-4 text-right">
-                    <button onClick={() => downloadMethod(entry.name)} className="font-medium text-blue-600  hover:underline">
+                    <button
+                      onClick={() => downloadMethod(entry.name)}
+                      className="font-medium text-blue-600  hover:underline"
+                    >
                       <FileDownloadOutlinedIcon />
                     </button>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button className="font-medium text-blue-600  hover:underline">
-                      <EditOutlinedIcon />
-                    </button>
+                    {entry.name.includes(".raw") && (
+                      <button
+                        onClick={() => navigate(`/${entry.name}/edit`)}
+                        className="font-medium text-blue-600  hover:underline"
+                      >
+                        <EditOutlinedIcon />
+                      </button>
+                    )}
                   </td>
 
                   <td className="px-6 py-4 text-right">
@@ -74,7 +91,7 @@ export const Table = (props) => {
             })}
         </tbody>
       </table>
-      <Loader loading={eneryDeleting || loading} />      
+      <Loader loading={eneryDeleting || loading} />
     </div>
   );
 };
