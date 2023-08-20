@@ -124,6 +124,7 @@ const EncryptionContainer = (props) => {
         groupAccositedProjectList,
         clearEncryption,
         showAlertPopup,
+        setGroupAccositedPProjectList,
       ]}
     >
       <div className=" h-full w-full flex flex-col justify-center items-center ">
@@ -139,7 +140,7 @@ const EncryptionContainer = (props) => {
             />
           </div>
           <div className="w-full">
-            <label htmlFor="passphrase">Encryption Pass Phrase</label>
+            <label htmlFor="passphrase">Encryption Passphrase</label>
             <br />
             <input
               type="password"
@@ -150,33 +151,37 @@ const EncryptionContainer = (props) => {
               className="w-full h-7 px-3 mt-2 rounded border-2 border-slate-300"
             />
             <br />
-            <button
-              className={`text-sm p-1 mt-2 rounded border-2 border-slate-300 ${
-                !isPassPhraseEnabled
-                  ? "bg-slate-300"
-                  : "hover:border-slate-800 hover:bg-slate-400"
-              } `}
-              onClick={genrateRandomKey}
-              disabled={!isPassPhraseEnabled || isContextSet}
-            >
-              Generate
-            </button>
-            <button
-              disabled={!isPassPhraseEnabled}
-              onClick={copyPassPhrase}
-              className={` ${
-                !isPassPhraseEnabled ? "" : "hover:text-color-3-700"
-              } `}
-            >
-              <ContentCopyIcon
-                sx={{
-                  p: 0.5,
-                  mx: 1,
-                  height: 32,
-                }}
-                onClick={copyPassPhrase}
-              />
-            </button>
+            {!isContextSet && (
+              <>
+                <button
+                  className={`text-sm p-1 mt-2 rounded border-2 border-slate-300 ${
+                    !isPassPhraseEnabled
+                      ? "bg-slate-300"
+                      : "hover:border-slate-800 hover:bg-slate-400"
+                  } `}
+                  onClick={genrateRandomKey}
+                  disabled={!isPassPhraseEnabled || isContextSet}
+                >
+                  Generate
+                </button>
+                <button
+                  disabled={!isPassPhraseEnabled}
+                  onClick={copyPassPhrase}
+                  className={` ${
+                    !isPassPhraseEnabled ? "" : "hover:text-color-3-700"
+                  } `}
+                >
+                  <ContentCopyIcon
+                    sx={{
+                      p: 0.5,
+                      mx: 1,
+                      height: 32,
+                    }}
+                    onClick={copyPassPhrase}
+                  />
+                </button>
+              </>
+            )}
           </div>
           <div className="w-full">
             <label htmlFor="verification-code">Verification Code</label>
@@ -200,7 +205,7 @@ const EncryptionContainer = (props) => {
               disabled={!isNextEnabled}
               onClick={handleSetEncryption}
             >
-              Set Encryption Key
+              Set Passphrase
             </button>
           ) : (
             <button
@@ -212,7 +217,7 @@ const EncryptionContainer = (props) => {
               disabled={!isContextSet}
               onClick={clearEncryption}
             >
-              Clear Encryption Key
+              Clear Passphrase
             </button>
           )}
         </div>
