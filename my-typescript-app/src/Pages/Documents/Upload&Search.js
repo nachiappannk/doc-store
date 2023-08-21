@@ -16,7 +16,12 @@ import {
 const MAX_LENGTH = 1;
 const MAX_FILE_SIZE = 5120;
 
-export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) => {
+export const UploadAndSeearchSection = ({
+  project,
+  onUpload,
+  encryptionKey,
+  filterFiles,
+}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileSize, setfileSize] = useState(0);
   const [uploading, setUploading] = useState(false);
@@ -94,10 +99,10 @@ export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) =>
     }
   };
 
-  const initializeFileReadProgress = (fileCount)=> {
+  const initializeFileReadProgress = (fileCount) => {
     const arr = Array(fileCount).fill(0);
     setFileReadProgress(arr);
-  }
+  };
 
   const updatefileReadProgress = (i, progress) => {
     const readprogressState = [...fileReadProgress];
@@ -112,10 +117,15 @@ export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) =>
       commit_message: "create a new file",
       encoding: "base64",
     };
-    const res = await createNewFileInRepository(project.id, file.name, content, encryptionKey);
+    const res = await createNewFileInRepository(
+      project.id,
+      file.name,
+      content,
+      encryptionKey
+    );
     if (res.status === 201) {
       removeSelectedFile(file);
-    }    
+    }
     await onUpload();
     setUploading(false);
     return;
@@ -123,7 +133,7 @@ export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) =>
 
   return (
     <>
-      <section className="container p-8  max-w-4xl flex flex-row   flex-wrap  justify-between items-center w-full">
+      <section className="container p-8 md:p-0 max-w-4xl flex flex-row   flex-wrap  justify-between items-center w-full">
         <div className="flex flex-row gap-0 md:gap-4 w-full md:w-auto flex-wrap md:flex-nowrap">
           <button
             className="flex flex-row p-2.5 gap-4 my-4 w-full md:w-auto justify-center items-start bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:ring-blue-500 hover:border-blue-500"
@@ -149,7 +159,7 @@ export const UploadAndSeearchSection = ({ project, onUpload, encryptionKey }) =>
             <Typography>Create New</Typography>
           </Link>
         </div>
-        <SerachWithIcon />
+        <SerachWithIcon handleSearch={filterFiles} />
       </section>
       {selectedFiles && selectedFiles.length > 0 && (
         <div className="container  p-8   w-full max-w-4xl flex flex-grow">
