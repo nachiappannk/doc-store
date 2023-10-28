@@ -82,7 +82,7 @@ export const TextEditor = (props) => {
       props.fileName,
       encryptionKey
     );
-    const rawData = convertFromRaw(JSON.parse(data));
+    const rawData = convertFromRaw(data);
     const editorState = EditorState.createWithContent(rawData);
     setEditorState(editorState);
     setUploading(false);

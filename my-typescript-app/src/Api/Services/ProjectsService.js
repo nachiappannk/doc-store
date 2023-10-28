@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js";
+import CryptoJS, { enc } from "crypto-js";
 import { getAPI, postAPI, postFormAPI, putAPI, deleteAPI } from "../Config/ApiMethods";
 import {
   GetAllAccesibleUserProjectsEndpoint,
@@ -74,13 +74,43 @@ export const getGroupProjects = async (groupId) => {
   return await getAPI(GetGroupAssociatedProjectsEndpoint(groupId));
 };
 
-export const createNewFileInRepository = async (projectId, fileName, data, encryptionKey) => {
-  console.log("encode this data");
+export const encryptData = async (data, encryptionKey) => {
+  console.log("encryptData");
   console.log(data);
-  console.log(encryptionKey);
+  const stringifiedData = JSON.stringify(data);
+  console.log(stringifiedData);
+  const encryptedContent = CryptoJS.AES.encrypt(stringifiedData, encryptionKey, {
+    mode: CryptoJS.mode.ECB, // Electronic Codebook mode
+    padding: CryptoJS.pad.Pkcs7, // PKCS7 padding
+  });
+  const encryptedContentString = encryptedContent.toString();
+  console.log(encryptedContent);
+  const base64Encoded = btoa(encryptedContentString);
+  console.log(base64Encoded);
+  return base64Encoded;
+}
+
+export const decryptData = async (encryptedDataBase64Data, encryptionKey) => {
+  console.log("decryptData");
+  console.log(encryptedDataBase64Data);
+  const encryptedString = atob(encryptedDataBase64Data);
+  console.log(encryptedString);
+  const decrypted = CryptoJS.AES.decrypt(encryptedString, encryptionKey, {
+    mode: CryptoJS.mode.ECB, // Electronic Codebook mode
+    padding: CryptoJS.pad.Pkcs7, // PKCS7 padding
+  });
+  const decryptedText = CryptoJS.enc.Utf8.stringify(decrypted);
+  console.log(decryptedText);
+  const resultObject = JSON.parse(decryptedText);
+  console.log(resultObject);
+  return resultObject;
+}
+
+export const createNewFileInRepository = async (projectId, fileName, data, encryptionKey) => {
+  const contentToBeUsed = await encryptData(data, encryptionKey);
   const content = {
     branch: "main",
-    content: btoa(JSON.stringify(data)),
+    content: contentToBeUsed,
     commit_message: "create a new file",
     encoding: "base64",
   };
@@ -139,29 +169,25 @@ export const getProjectFileData = async (
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedName) + "?ref=main"
   );
   const base64_string = result.data.content;
-  return atob(base64_string)
+  const data = decryptData(base64_string, encryptionKey);
+  return data;
 };
 
 export const updateProjectFile = async (
   projectId, fileName, data, encryptionKey
 ) => {
-
+  const contentToBeUsed = await encryptData(data, encryptionKey);
   const content = {
     branch: "main",
-    content: btoa(JSON.stringify(data)),
+    content: contentToBeUsed,
     commit_message: "updating file",
     encoding: "base64",
   };
-
-  console.log("encode this data");
-  console.log(content);
-  console.log(encryptionKey);
   const encodedName = encodedFilename(fileName, encryptionKey);
   return await putAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedName),
     content
   );
-  
 };
 
 export const deleteProjectFile = async (projectId, fileName, encryptionKey) => {
