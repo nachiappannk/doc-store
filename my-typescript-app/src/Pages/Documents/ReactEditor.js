@@ -49,25 +49,19 @@ export const TextEditor = (props) => {
     setUploading(true);
     const data = convertToRaw(editorState.getCurrentContent());
     const isUpdateFile = props.fileName || false;
-    const content = {
-      branch: "main",
-      content: btoa(JSON.stringify(data)),
-      commit_message: isUpdateFile ? "updating file" : "create a new file",
-      encoding: "base64",
-    };
     let res;
     if (isUpdateFile) {
       res = await updateProjectFile(
         selectedProject.id,
         fileName,
-        content,
+        data,
         encryptionKey
       );
     } else {
       res = await createNewFileInRepository(
         selectedProject.id,
         fileName + ".raw",
-        content,
+        data,
         encryptionKey
       );
     }

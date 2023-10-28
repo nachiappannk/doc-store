@@ -75,13 +75,19 @@ export const getGroupProjects = async (groupId) => {
 };
 
 export const createNewFileInRepository = async (projectId, fileName, data, encryptionKey) => {
-  console.log("creating new file in the repo");
   console.log("encode this data");
   console.log(data);
+  console.log(encryptionKey);
+  const content = {
+    branch: "main",
+    content: btoa(JSON.stringify(data)),
+    commit_message: "create a new file",
+    encoding: "base64",
+  };
   const encodedFileName = encodedFilename(fileName, encryptionKey);
   return await postAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedFileName),
-    data
+    content
   );
 };
 
@@ -139,11 +145,21 @@ export const getProjectFileData = async (
 export const updateProjectFile = async (
   projectId, fileName, data, encryptionKey
 ) => {
+
+  const content = {
+    branch: "main",
+    content: btoa(JSON.stringify(data)),
+    commit_message: "updating file",
+    encoding: "base64",
+  };
+
   console.log("encode this data");
+  console.log(content);
+  console.log(encryptionKey);
   const encodedName = encodedFilename(fileName, encryptionKey);
   return await putAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedName),
-    data
+    content
   );
   
 };
