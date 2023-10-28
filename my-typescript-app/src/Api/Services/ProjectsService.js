@@ -75,8 +75,10 @@ export const getGroupProjects = async (groupId) => {
 };
 
 export const createNewFileInRepository = async (projectId, fileName, data, encryptionKey) => {
+  console.log("creating new file in the repo");
+  console.log("encode this data");
+  console.log(data);
   const encodedFileName = encodedFilename(fileName, encryptionKey);
-  console.log(encodedFileName);
   return await postAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedFileName),
     data
@@ -125,6 +127,7 @@ export const getProjectFileData = async (
   fileName,
   encryptionKey
 ) => {
+  console.log("testing this has to be decoded");
   const encodedName = encodedFilename(fileName, encryptionKey);
   const result = await getAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedName) + "?ref=main"
@@ -136,6 +139,7 @@ export const getProjectFileData = async (
 export const updateProjectFile = async (
   projectId, fileName, data, encryptionKey
 ) => {
+  console.log("encode this data");
   const encodedName = encodedFilename(fileName, encryptionKey);
   return await putAPI(
     GetCreateNewFileInRepositoryEndpoint(projectId, encodedName),
